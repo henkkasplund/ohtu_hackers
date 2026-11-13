@@ -26,6 +26,7 @@ def get_reference_types():
     result = db.session.execute(text("SELECT id, name FROM reference_types"))
     return result.fetchall()
 
+
 def get_all_citations():
     result = db.session.execute(
         text("""
@@ -57,3 +58,9 @@ def create_book(citation_key, author, title, year, publisher, style_name):
         },
     )
     db.session.commit()
+
+
+def citation_key_exists(citation_key):
+    sql = text("SELECT 1 FROM citations WHERE citation_key = :citation_key")
+    result = db.session.execute(sql, {"citation_key": citation_key}).fetchone()
+    return result is not None

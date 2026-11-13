@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from repositories import citation_repository
+
 
 class UserInputError(Exception):
     pass
@@ -35,3 +37,6 @@ def validate_reference(style_name, form_data):
             )
     else:
         raise UserInputError("Tuntematon viitetyyppi!")
+    citation_key = form_data.get("citation_key", "").strip()
+    if citation_repository.citation_key_exists(citation_key):
+        raise UserInputError(f"Viiteavain '{citation_key}' on jo käytössä!")
