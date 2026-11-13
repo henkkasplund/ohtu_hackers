@@ -24,16 +24,10 @@ def add_reference():
     if request.method == "POST":
         style_name = request.form.get("reference_types_name")
 
-        if style_name == "Kirja":
-            required_fields = [
-                "citation_key",
-                "author",
-                "title",
-                "year",
-                "publisher",
-            ]
-            if not all(request.form.get(field) for field in required_fields):
-                return "Kaikki kirjan kentät ovat pakollisia!", 400
+        try:
+            util.validate_reference(style_name, request.form)
+        except util.UserInputError as error:
+            return str(error), 400
 
         return redirect("/")
 

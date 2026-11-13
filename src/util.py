@@ -18,3 +18,20 @@ def validate_todo(content):
 def get_citation_styles():
     result = db.session.execute(text("SELECT id, name FROM citation_styles"))
     return result.fetchall()
+
+
+def validate_reference(style_name, form_data):
+    if style_name == "Kirja":
+        required_fields = [
+            "citation_key",
+            "author",
+            "title",
+            "year",
+            "publisher",
+        ]
+        for field in required_fields:
+            value = form_data.get(field)
+            if not value or not value.strip():
+                raise UserInputError("Kaikki kirjan kentät ovat pakollisia!")
+    else:
+        raise UserInputError("Tuntematon viitetyyppi!")
