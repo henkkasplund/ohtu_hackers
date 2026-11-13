@@ -22,7 +22,7 @@ def index():
 @app.route("/add_reference", methods=["GET", "POST"])
 def add_reference():
     if request.method == "POST":
-        style_name = request.form.get("citation_style_name")
+        style_name = request.form.get("reference_types_name")
 
         if style_name == "Kirja":
             required_fields = [
@@ -37,11 +37,11 @@ def add_reference():
 
         return redirect("/")
 
-    citation_styles = util.get_citation_styles()
+    reference_types = util.get_citation_styles()
     selected_style = request.args.get("style")
     return render_template(
         "add_reference.html",
-        citation_styles=citation_styles,
+        reference_types=reference_types,
         selected_style=selected_style,
     )
 

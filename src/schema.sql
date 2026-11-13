@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS citation_styles (
+CREATE TABLE IF NOT EXISTS reference_types (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL UNIQUE
 );
@@ -14,6 +14,6 @@ CREATE TABLE IF NOT EXISTS citations (
     volume TEXT,
     pages TEXT,
     publisher TEXT,
-    citation_style_name TEXT NOT NULL,
-    FOREIGN KEY (citation_style_name) REFERENCES citation_styles(name)
+    reference_type_name TEXT NOT NULL,
+    FOREIGN KEY (reference_type_name) REFERENCES reference_types(name)
 );

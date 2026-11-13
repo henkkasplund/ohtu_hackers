@@ -1,1 +1,1 @@
-INSERT INTO citation_styles (name) VALUES ("Kirja");
+INSERT INTO reference_types (name) VALUES ("Kirja");

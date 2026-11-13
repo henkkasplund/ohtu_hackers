@@ -5,9 +5,9 @@
   <label for="style">Viitetyyli:</label>
   <select id="style" name="style" required>
     <option value="" disabled {% if not selected_style %}selected{% endif %}>Valitse viitetyyli...</option>
-    {% for style in citation_styles %}
-      <option value="{{ style.name }}" {% if selected_style == style.name %}selected{% endif %}>
-        {{ style.name }}
+    {% for type in reference_types %}
+      <option value="{{ type.name }}" {% if selected_style == type.name %}selected{% endif %}>
+        {{ type.name }}
       </option>
     {% endfor %}
   </select>
@@ -19,7 +19,7 @@
 <!-- 2. Vaihe: Varsinainen lomake näkyy vasta, kun tyyli on valittu -->
 {% if selected_style == "Kirja" %}
   <form action="/add_reference" method="POST">
-    <input type="hidden" name="citation_style_name" value="{{ selected_style }}">
+    <input type="hidden" name="reference_types_name" value="{{ selected_style }}">
 
     <div>
       <label for="citation_key">Viiteavain (esim. Martin09):</label>
