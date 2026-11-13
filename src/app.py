@@ -1,5 +1,6 @@
 from flask import flash, jsonify, redirect, render_template, request
 
+import util
 from config import app, test_env
 from db_helper import reset_db
 from repositories.todo_repository import create_todo, set_done
@@ -15,6 +16,33 @@ def index():
 
     return render_template(
         "index.html",
+    )
+
+
+@app.route("/add_reference", methods=["GET", "POST"])
+def add_reference():
+    if request.method == "POST":
+        style_name = request.form.get("citation_style_name")
+
+        if style_name == "Kirja":
+            required_fields = [
+                "citation_key",
+                "author",
+                "title",
+                "year",
+                "publisher",
+            ]
+            if not all(request.form.get(field) for field in required_fields):
+                return "Kaikki kirjan kentät ovat pakollisia!", 400
+
+        return redirect("/")
+
+    citation_styles = util.get_citation_styles()
+    selected_style = request.args.get("style")
+    return render_template(
+        "add_reference.html",
+        citation_styles=citation_styles,
+        selected_style=selected_style,
     )
 
 
