@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 class UserInputError(Exception):
     pass
 
@@ -19,14 +22,16 @@ def validate_reference(style_name, form_data):
             "year",
             "publisher",
         ]
-        year = form_data.get("year", "").strip()
-        if not year.isdigit() or int(year) <= 0:
-            raise UserInputError(
-                "Vuoden täytyy olla positiivinen kokonaisluku!"
-            )
         for field in required_fields:
             value = form_data.get(field)
             if not value or not value.strip():
                 raise UserInputError("Kaikki kirjan kentät ovat pakollisia!")
+
+        year = form_data.get("year", "").strip()
+        current_year = datetime.now().year
+        if not year.isdigit() or not (1 <= int(year) <= current_year):
+            raise UserInputError(
+                f"Vuoden täytyy olla kokonaisluku väliltä 1–{current_year}!"
+            )
     else:
         raise UserInputError("Tuntematon viitetyyppi!")
