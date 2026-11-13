@@ -22,8 +22,8 @@ def create_todo(content):
     db.session.commit()
 
 
-def get_citation_styles():
-    result = db.session.execute(text("SELECT id, name FROM citation_styles"))
+def get_reference_types():
+    result = db.session.execute(text("SELECT id, name FROM reference_types"))
     return result.fetchall()
 
 

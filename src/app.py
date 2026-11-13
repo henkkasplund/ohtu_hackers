@@ -40,7 +40,7 @@ def add_reference():
             )
         return redirect("/")
 
-    reference_types = citation_repository.get_citation_styles()
+    reference_types = citation_repository.get_reference_types()
     selected_style = request.args.get("style")
     return render_template(
         "add_reference.html",
