@@ -1,0 +1,1 @@
+INSERT INTO citation_styles (name) VALUES ("Kirja");
