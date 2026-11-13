@@ -30,10 +30,10 @@ def get_reference_types():
 def create_book(citation_key, author, title, year, publisher, style_name):
     sql = text("""
         INSERT INTO citations (
-            citation_key, author, title, year, publisher, citation_style_name
+            citation_key, author, title, year, publisher, reference_type_name
         )
         VALUES (
-            :citation_key, :author, :title, :year, :publisher, :citation_style_name
+            :citation_key, :author, :title, :year, :publisher, :reference_type_name
         )
     """)
     db.session.execute(
@@ -44,7 +44,7 @@ def create_book(citation_key, author, title, year, publisher, style_name):
             "title": title,
             "year": int(year),
             "publisher": publisher,
-            "citation_style_name": style_name,
+            "reference_type_name": style_name,
         },
     )
     db.session.commit()
