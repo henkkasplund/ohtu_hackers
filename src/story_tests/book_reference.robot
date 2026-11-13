@@ -55,3 +55,29 @@ Book Reference With Zero Year Is Rejected
 
     Click  button >> text=Tallenna kirja
     Get Text  body  *=  Vuoden täytyy olla kokonaisluku väliltä
+
+Book Reference With Existing Key Is Rejected
+    Add Book Reference  Martin09  Clean Code
+    Get Url  ==  ${HOME_URL}/
+
+    Add Book Reference  Martin09  Toinen kirja
+    Get Text  body  *=  Viiteavain 'Martin09' on jo käytössä!
+
+    Go To  ${HOME_URL}/references
+    Get Element Count  tbody tr  ==  1
+    Get Text  tbody tr  *=  Martin09
+    Get Text  tbody tr  *=  Clean Code
+
+*** Keywords ***
+Add Book Reference
+    [Arguments]  ${key}  ${title}
+    Go To  ${HOME_URL}/add_reference
+    Select Options By  id=style  label  Kirja
+    Click  button >> text=Valitse
+    Fill Text  id=citation_key  ${key}
+    Fill Text  id=author  Robert Martin
+    Fill Text  id=title  ${title}
+    Fill Text  id=year  2008
+    Fill Text  id=publisher  Prentice Hall
+    Click  button >> text=Tallenna kirja
+
