@@ -29,6 +29,11 @@ def validate_reference(style_name, form_data):
             "year",
             "publisher",
         ]
+        year = form_data.get("year", "").strip()
+        if not year.isdigit() or int(year) <= 0:
+            raise UserInputError(
+                "Vuoden täytyy olla positiivinen kokonaisluku!"
+            )
         for field in required_fields:
             value = form_data.get(field)
             if not value or not value.strip():
