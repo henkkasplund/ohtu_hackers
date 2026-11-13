@@ -6,8 +6,8 @@ from config import app, db
 
 
 def reset_db():
-    print("Clearing contents from table todos")
-    sql = text("DELETE FROM todos")
+    print("Clearing contents from table citations")
+    sql = text("DELETE FROM citations")
     db.session.execute(sql)
     db.session.commit()
 

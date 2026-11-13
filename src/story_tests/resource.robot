@@ -19,5 +19,7 @@ Open And Configure Browser
     New Context
     New Page  about:blank
 
-Reset Todos
+Reset Application
     Go To  ${RESET_URL}
+    Get Text  body  *=  db reset
+
