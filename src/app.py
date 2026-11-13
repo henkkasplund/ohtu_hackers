@@ -3,7 +3,7 @@ from flask import flash, jsonify, redirect, render_template, request
 import util
 from config import app, test_env
 from db_helper import reset_db
-from repositories.todo_repository import create_todo, set_done
+from repositories import citation_repository
 
 
 ## @app.route("/")
@@ -29,9 +29,18 @@ def add_reference():
         except util.UserInputError as error:
             return str(error), 400
 
+        if style_name == "Kirja":
+            citation_repository.create_book(
+                request.form.get("citation_key"),
+                request.form.get("author"),
+                request.form.get("title"),
+                request.form.get("year"),
+                request.form.get("publisher"),
+                style_name,
+            )
         return redirect("/")
 
-    reference_types = util.get_citation_styles()
+    reference_types = citation_repository.get_citation_styles()
     selected_style = request.args.get("style")
     return render_template(
         "add_reference.html",
