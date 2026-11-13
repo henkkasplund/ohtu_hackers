@@ -1,13 +1,11 @@
-## Ohtu miniprojekti boilerplate
+# ohtu_hackers
+ohtu 2026 miniproject
 
-Lue [täältä](https://studies.cs.helsinki.fi/ohtu/flask/) lisää.
+## Pelisäännöt
 
-Muutamia vihjeitä projektin alkuun [täällä](https://github.com/ohjelmistotuotanto-hy/miniprojekti-boilerplate/blob/main/misc/ohjeita.md).
+[Ryhmän pelisäännöt](pelisaannot.md)
 
-Esimerkki product ja sprint backlogeista sekä ohje niiden tekemiseen GitHub Projectsilla [täällä](BACKLOG.md). Esimerkin backlogit esitellään myös kurssimateriaalin osassa 2, ks. [Esimerkki: backlogit GitHub Projectsilla](https://studies.cs.helsinki.fi/ohtu/osa2/#esimerkki-backlogit-github-projectsilla).
+## Backlogit
 
-### Sovelluksen vieminen OKD-klusterille
+[Projektin backlogit](https://github.com/users/henkkasplund/projects/1/views/1)
 
-Ohje sovelluksen viemiseen yliopiston OKD-klusterille [täällä](DEPLOYMENT.md). Ohjeessa kerrotaan myös, miten klusterilla oleva versio päivittyy automaattisesti ja milloin päivitys on tehtävä itse.
-
-Huomaa, että **klusterin tietokanta ei päivity automaattisesti**: tietokanta on alustettava itse ensimmäisen deployauksen jälkeen ja aina kun tietokannan rakenne muuttuu, ks. [Tietokanta klusterilla](DEPLOYMENT.md#tietokanta-klusterilla).
