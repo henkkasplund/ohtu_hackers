@@ -18,7 +18,6 @@ def index():
         "index.html",
     )
 
-
 @app.route("/add_reference", methods=["GET", "POST"])
 def add_reference():
     if request.method == "POST":
@@ -47,6 +46,11 @@ def add_reference():
         reference_types=reference_types,
         selected_style=selected_style,
     )
+
+@app.route("/references")
+def show_references():
+    references = citation_repository.get_all_citations()
+    return render_template("sources.html", references=references)
 
 
 @app.route("/new_todo")

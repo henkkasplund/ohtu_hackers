@@ -26,6 +26,15 @@ def get_reference_types():
     result = db.session.execute(text("SELECT id, name FROM reference_types"))
     return result.fetchall()
 
+def get_all_citations():
+    result = db.session.execute(
+        text("""
+            SELECT id, citation_key, author, title, year, publisher, reference_type_name 
+            FROM citations
+        """)
+    )
+    return result.fetchall()
+
 
 def create_book(citation_key, author, title, year, publisher, style_name):
     sql = text("""

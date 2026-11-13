@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Tallennetut lähteet</title>
+</head>
+<body>
+    <h1>Tallennetut lähteet</h1>
+
+    {% if references %}
+        <table border="1" cellpadding="8" style="border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th>Avain</th>
+                    <th>Kirjoittaja</th>
+                    <th>Otsikko</th>
+                    <th>Vuosi</th>
+                    <th>Kustantaja</th>
+                    <th>Tyyppi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ref in references %}
+                <tr>
+                    <td>{{ ref.citation_key }}</td>
+                    <td>{{ ref.author }}</td>
+                    <td>{{ ref.title }}</td>
+                    <td>{{ ref.year }}</td>
+                    <td>{{ ref.publisher }}</td>
+                    <td>{{ ref.citation_style_name }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Ei tallennettuja lähteitä vielä.</p>
+    {% endif %}
+
+    <p><a href="/">Takaisin etusivulle</a></p>
+</body>
+</html>
