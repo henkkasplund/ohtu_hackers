@@ -19,6 +19,15 @@ Book Reference Can Be Submitted
     Click  button >> text=Tallenna kirja
     Get Url  ==  ${HOME_URL}/
 
+    Go To  ${HOME_URL}/references
+    Get Title  ==  Tallennetut lähteet
+    Get Text  tbody tr  *=  Martin09
+    Get Text  tbody tr  *=  Robert Martin
+    Get Text  tbody tr  *=  Clean Code
+    Get Text  tbody tr  *=  2008
+    Get Text  tbody tr  *=  Prentice Hall
+    Get Text  tbody tr  *=  Kirja
+
 Book Reference With Blank Title Is Rejected
     Go To  ${HOME_URL}/add_reference
     Select Options By  id=style  label  Kirja
