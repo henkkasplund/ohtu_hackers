@@ -11,6 +11,7 @@ ohtu 2026 miniproject
 
 ## Sovelluksen käyttöönotto
 ### Asentaa oikeat riippuvuudet
++ Vain ensimmäisellä kerralla, tai jos asennettu uusi riippuvuus uv add ...
 + uv sync
 ### Luo tietokannat 
 + uv run python src/db_helper.py
