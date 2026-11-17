@@ -31,4 +31,4 @@ patches:
     patch: |-
       - op: add
         path: /spec/host
-        value: route-acual-ohjelmistotuotanto-lahiopetus-2026-6.ext.okd-cs-test-0.k8s.cs.helsinki.fi
+        value: route-ohjelmistotuotanto-lahiopetus-2026-6.ext.okd-cs-test-0.k8s.cs.helsinki.fi
