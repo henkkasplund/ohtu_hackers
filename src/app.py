@@ -1,4 +1,4 @@
-from flask import flash, jsonify, redirect, render_template, request
+from flask import jsonify, redirect, render_template, request
 
 import util
 from config import app, test_env
@@ -18,25 +18,22 @@ def index():
         "index.html",
     )
 
+
 @app.route("/add_reference", methods=["GET", "POST"])
 def add_reference():
     if request.method == "POST":
         style_name = request.form.get("reference_types_name")
 
         try:
-            util.validate_reference(style_name, request.form)
+            if style_name == "Kirja":
+                book = util.create_book_citation(request.form)
+                util.validate_reference(book)
+                citation_repository.save_book(book)
+            else:
+                raise util.UserInputError("Tuntematon viitetyyppi!")
         except util.UserInputError as error:
             return str(error), 400
 
-        if style_name == "Kirja":
-            citation_repository.create_book(
-                request.form.get("citation_key"),
-                request.form.get("author"),
-                request.form.get("title"),
-                request.form.get("year"),
-                request.form.get("publisher"),
-                style_name,
-            )
         return redirect("/")
 
     reference_types = citation_repository.get_reference_types()
@@ -47,6 +44,7 @@ def add_reference():
         selected_style=selected_style,
     )
 
+
 @app.route("/references")
 def show_references():
     references = citation_repository.get_all_citations()
@@ -56,25 +54,6 @@ def show_references():
 @app.route("/new_todo")
 def new():
     return render_template("new_todo.html")
-
-
-@app.route("/create_todo", methods=["POST"])
-def todo_creation():
-    content = request.form.get("content")
-
-    try:
-        validate_todo(content)
-        create_todo(content)
-        return redirect("/")
-    except Exception as error:
-        flash(str(error))
-        return redirect("/new_todo")
-
-
-@app.route("/toggle_todo/<todo_id>", methods=["POST"])
-def toggle_todo(todo_id):
-    set_done(todo_id)
-    return redirect("/")
 
 
 # testausta varten oleva reitti
