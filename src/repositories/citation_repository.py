@@ -1,13 +1,7 @@
 from sqlalchemy import text
 
 from config import db
-from entities.todo import Todo
-
-
-def get_todos():
-    result = db.session.execute(text("SELECT id, content, done FROM todos"))
-    todos = result.fetchall()
-    return [Todo(todo[0], todo[1], todo[2]) for todo in todos]
+from entities.citation import Citation
 
 
 def set_done(todo_id):
@@ -30,14 +24,26 @@ def get_reference_types():
 def get_all_citations():
     result = db.session.execute(
         text("""
-            SELECT id, citation_key, author, title, year, publisher, reference_type_name 
+            SELECT id, citation_key, author, title, year, publisher, reference_type_name
             FROM citations
         """)
     )
-    return result.fetchall()
+    citations = result.fetchall()
+    return [
+        Citation(
+            citation_id=row.id,
+            citation_key=row.citation_key,
+            author=row.author,
+            title=row.title,
+            year=row.year,
+            publisher=row.publisher,
+            reference_type_name=row.reference_type_name,
+        )
+        for row in citations
+    ]
 
 
-def create_book(citation_key, author, title, year, publisher, style_name):
+def save_book(book):
     sql = text("""
         INSERT INTO citations (
             citation_key, author, title, year, publisher, reference_type_name
@@ -49,12 +55,12 @@ def create_book(citation_key, author, title, year, publisher, style_name):
     db.session.execute(
         sql,
         {
-            "citation_key": citation_key,
-            "author": author,
-            "title": title,
-            "year": int(year),
-            "publisher": publisher,
-            "reference_type_name": style_name,
+            "citation_key": book.citation_key,
+            "author": book.author,
+            "title": book.title,
+            "year": int(book.year),
+            "publisher": book.publisher,
+            "reference_type_name": book.reference_type_name,
         },
     )
     db.session.commit()

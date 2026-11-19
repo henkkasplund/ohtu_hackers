@@ -1,8 +1,19 @@
 class Citation:
-    def __init__(self, id, citation_key, author, title, year,
-                 reference_type_name, booktitle=None, journal=None,
-                 volume=None, pages=None, publisher=None):
-        self.id = id
+    def __init__(
+        self,
+        citation_key,
+        author,
+        title,
+        year,
+        reference_type_name,
+        citation_id=None,
+        booktitle=None,
+        journal=None,
+        volume=None,
+        pages=None,
+        publisher=None,
+    ):
+        self.citation_id = citation_id
         self.citation_key = citation_key
         self.author = author
         self.title = title
