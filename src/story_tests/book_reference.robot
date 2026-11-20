@@ -7,7 +7,7 @@ Test Setup       Reset Application
 *** Test Cases ***
 Book Reference Can Be Submitted
     Go To  ${HOME_URL}/add_reference
-    Select Options By  id=style  label  Kirja
+    Select Options By  id=reference_type_name  label  Kirja
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  Martin09
@@ -30,7 +30,7 @@ Book Reference Can Be Submitted
 
 Book Reference With Blank Title Is Rejected
     Go To  ${HOME_URL}/add_reference
-    Select Options By  id=style  label  Kirja
+    Select Options By  id=reference_type_name  label  Kirja
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  Martin09
@@ -44,7 +44,7 @@ Book Reference With Blank Title Is Rejected
 
 Book Reference With Zero Year Is Rejected
     Go To  ${HOME_URL}/add_reference
-    Select Options By  id=style  label  Kirja
+    Select Options By  id=reference_type_name  label  Kirja
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  Martin09
@@ -84,7 +84,7 @@ Book Reference Page Shows BibTeX
 Add Book Reference
     [Arguments]  ${key}  ${title}
     Go To  ${HOME_URL}/add_reference
-    Select Options By  id=style  label  Kirja
+    Select Options By  id=reference_type_name  label  Kirja
     Click  button >> text=Valitse
     Fill Text  id=citation_key  ${key}
     Fill Text  id=author  Robert Martin

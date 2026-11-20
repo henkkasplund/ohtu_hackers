@@ -28,13 +28,13 @@ def create_book_citation(form_data):
         author=author,
         title=title,
         year=year,
-        reference_type_name="Kirja",
+        reference_type_name="book",
         publisher=publisher,
     )
 
 
 def validate_reference(citation):
-    if citation.reference_type_name == "Kirja":
+    if citation.reference_type_name == "book":
         required_fields = [
             citation.citation_key,
             citation.author,

@@ -1,6 +1,7 @@
 CREATE TABLE IF NOT EXISTS reference_types (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL UNIQUE
+    name TEXT NOT NULL UNIQUE,
+    display_name TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS citations (
