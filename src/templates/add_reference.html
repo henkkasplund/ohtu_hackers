@@ -1,50 +1,64 @@
-<h1>Lisää viite</h1>
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Lisää viite</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+</head>
+<body>
+  <div class="container">
+    <h1>Lisää viite</h1>
 
-<form action="/add_reference" method="GET">
-  <label for="style">Viitetyyli:</label>
-  <select id="style" name="style" required>
-    <option value="" disabled {% if not selected_style %}selected{% endif %}>Valitse viitetyyli...</option>
-    {% for type in reference_types %}
-      <option value="{{ type.name }}" {% if selected_style == type.name %}selected{% endif %}>
-        {{ type.name }}
-      </option>
-    {% endfor %}
-  </select>
-  <button type="submit">Valitse</button>
-</form>
+    <form action="/add_reference" method="GET">
+      <label for="style">Viitetyyli:</label>
+      <select id="style" name="style" required>
+        <option value="" disabled {% if not selected_style %}selected{% endif %}>Valitse viitetyyli...</option>
+        {% for type in reference_types %}
+          <option value="{{ type.name }}" {% if selected_style == type.name %}selected{% endif %}>
+            {{ type.name }}
+          </option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn">Valitse</button>
+    </form>
 
-<hr>
+    <hr>
 
-{% if selected_style == "Kirja" %}
-  <form action="/add_reference" method="POST">
-    <input type="hidden" name="reference_types_name" value="{{ selected_style }}">
+    {% if selected_style == "Kirja" %}
+      <form action="/add_reference" method="POST">
+        <input type="hidden" name="reference_types_name" value="{{ selected_style }}">
 
-    <div>
-      <label for="citation_key">Viiteavain (esim. Martin09):</label>
-      <input type="text" id="citation_key" name="citation_key" required>
-    </div>
+        <div>
+          <label for="citation_key">Viiteavain (esim. Martin09):</label>
+          <input type="text" id="citation_key" name="citation_key" required>
+        </div>
 
-    <div>
-      <label for="author">Tekijä (Author):</label>
-      <input type="text" id="author" name="author" required>
-    </div>
+        <div>
+          <label for="author">Tekijä (Author):</label>
+          <input type="text" id="author" name="author" required>
+        </div>
 
-    <div>
-      <label for="title">Otsikko (Title):</label>
-      <input type="text" id="title" name="title" required>
-    </div>
+        <div>
+          <label for="title">Otsikko (Title):</label>
+          <input type="text" id="title" name="title" required>
+        </div>
 
-    <div>
-      <label for="year">Vuosi (Year):</label>
-      <input type="text" id="year" name="year" pattern="[0-9]{4}" title="Syötä vuosiluku numeroina (esim. 2000)" required>
-    </div>
+        <div>
+          <label for="year">Vuosi (Year):</label>
+          <input type="text" id="year" name="year" pattern="[0-9]{4}" title="Syötä vuosiluku numeroina (esim. 2000)" required>
+        </div>
 
-    <div>
-      <label for="publisher">Kustantaja (Publisher):</label>
-      <input type="text" id="publisher" name="publisher" required>
-    </div>
+        <div>
+          <label for="publisher">Kustantaja (Publisher):</label>
+          <input type="text" id="publisher" name="publisher" required>
+        </div>
 
-    <button type="submit">Tallenna kirja</button>
-  </form>
-{% endif %}
-<p><a href="/">Takaisin etusivulle</a></p>
+        <button type="submit" class="btn">Tallenna kirja</button>
+      </form>
+    {% endif %}
+
+    <p><a href="/" class="btn btn-secondary">Takaisin etusivulle</a></p>
+  </div>
+</body>
+</html>

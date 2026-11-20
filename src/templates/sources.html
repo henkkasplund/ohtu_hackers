@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <meta charset="UTF-8">
-    <title>Tallennetut lähteet</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title>Tallennetut lähteet</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
 </head>
 <body>
+  <div class="container">
     <h1>Tallennetut lähteet</h1>
 
     {% if references %}
-        <table border="1" cellpadding="8" style="border-collapse: collapse;">
-            <thead>
-                <tr>
-                    <th>Avain</th>
-                    <th>Kirjoittaja</th>
-                    <th>Otsikko</th>
-                    <th>Vuosi</th>
-                    <th>Kustantaja</th>
-                    <th>Tyyppi</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for ref in references %}
-                <tr>
-                    <td><a href="/references/{{ ref.citation_id }}">{{ ref.citation_key }}</a></td>
-                    <td>{{ ref.author }}</td>
-                    <td>{{ ref.title }}</td>
-                    <td>{{ ref.year }}</td>
-                    <td>{{ ref.publisher }}</td>
-                    <td>{{ ref.reference_type_name }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <table border="1" cellpadding="8" style="border-collapse: collapse;">
+        <thead>
+          <tr>
+            <th>Avain</th>
+            <th>Kirjoittaja</th>
+            <th>Otsikko</th>
+            <th>Vuosi</th>
+            <th>Kustantaja</th>
+            <th>Tyyppi</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ref in references %}
+          <tr>
+            <td><a href="/references/{{ ref.citation_id }}">{{ ref.citation_key }}</a></td>
+            <td>{{ ref.author }}</td>
+            <td>{{ ref.title }}</td>
+            <td>{{ ref.year }}</td>
+            <td>{{ ref.publisher }}</td>
+            <td>{{ ref.reference_type_name }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     {% else %}
-        <p>Ei tallennettuja lähteitä vielä.</p>
+      <p>Ei tallennettuja lähteitä vielä.</p>
     {% endif %}
 
-    <p><a href="/">Takaisin etusivulle</a></p>
+    <p><a href="/" class="btn btn-secondary">Takaisin etusivulle</a></p>
+  </div>
 </body>
 </html>
