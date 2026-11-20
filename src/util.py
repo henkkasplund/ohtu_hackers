@@ -33,8 +33,8 @@ def create_book_citation(form_data):
     )
 
 
-def validate_reference(citation):
-    if citation.reference_type_name == "book":
+def validate_reference(citation, exclude_citation_id=None):
+    if citation.reference_type_name == "Kirja":
         required_fields = [
             citation.citation_key,
             citation.author,
@@ -56,7 +56,17 @@ def validate_reference(citation):
     else:
         raise UserInputError("Tuntematon viitetyyppi!")
 
-    if citation_repository.citation_key_exists(citation.citation_key):
+    if exclude_citation_id is None:
+        duplicate_exists = citation_repository.citation_key_exists(
+            citation.citation_key
+        )
+    else:
+        duplicate_exists = citation_repository.citation_key_exists_except(
+            citation.citation_key,
+            exclude_citation_id,
+        )
+
+    if duplicate_exists:
         raise UserInputError(
             f"Viiteavain '{citation.citation_key}' on jo käytössä!"
         )

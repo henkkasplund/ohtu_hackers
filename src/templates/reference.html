@@ -29,9 +29,14 @@
             </tr>
         </tbody>
     </table>
-    <form action="/references/{{ reference.citation_id }}/delete" method="get">
-        <p><button type="submit">Poista</button></p>
-    </form>
+    <div style="display: flex; gap: 8px;">
+        <form action="/references/{{ reference.citation_id }}/edit_reference" method="get">
+            <button type="submit">Muokkaa</button>
+        </form>
+        <form action="/references/{{ reference.citation_id }}/delete" method="get">
+            <button type="submit">Poista</button>
+        </form>
+    </div>
     <p><a href="/references">Takaisin lähdelistaan</a></p>
 </body>
 </html>
