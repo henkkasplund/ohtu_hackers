@@ -70,3 +70,31 @@ def citation_key_exists(citation_key):
     sql = text("SELECT 1 FROM citations WHERE citation_key = :citation_key")
     result = db.session.execute(sql, {"citation_key": citation_key}).fetchone()
     return result is not None
+
+
+def get_citation_by_id(citation_id):
+    sql = text("""
+        SELECT id, citation_key, author, title, year, publisher, reference_type_name
+        FROM citations
+        WHERE id = :id
+    """)
+    row = db.session.execute(sql, {"id": citation_id}).fetchone()
+
+    if row is None:
+        return None
+
+    return Citation(
+        citation_id=row.id,
+        citation_key=row.citation_key,
+        author=row.author,
+        title=row.title,
+        year=row.year,
+        publisher=row.publisher,
+        reference_type_name=row.reference_type_name,
+    )
+
+
+def delete_citation(citation_id):
+    sql = text("DELETE FROM citations WHERE id = :id")
+    db.session.execute(sql, {"id": citation_id})
+    db.session.commit()

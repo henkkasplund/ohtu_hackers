@@ -22,7 +22,7 @@
             <tbody>
                 {% for ref in references %}
                 <tr>
-                    <td>{{ ref.citation_key }}</td>
+                    <td><a href="/references/{{ ref.citation_id }}">{{ ref.citation_key }}</a></td>
                     <td>{{ ref.author }}</td>
                     <td>{{ ref.title }}</td>
                     <td>{{ ref.year }}</td>

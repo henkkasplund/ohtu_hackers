@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Vahvista poisto</title>
+</head>
+<body>
+    <h1>Vahvista poisto</h1>
+
+    <p>Haluatko varmasti poistaa tämän viitteen?</p>
+    <p><strong>{{ reference.citation_key }}: {{ reference.title }}</strong></p>
+
+    <form action="/references/{{ reference.citation_id }}/delete" method="post">
+        <button type="submit">Poista viite</button>
+    </form>
+
+    <p>
+        <a href="/references/{{ reference.citation_id }}">Peruuta</a>
+    </p>
+</body>
+</html>
