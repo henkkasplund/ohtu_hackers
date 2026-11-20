@@ -24,8 +24,10 @@ def get_reference_types():
 def get_all_citations():
     result = db.session.execute(
         text("""
-            SELECT id, citation_key, author, title, year, publisher, reference_type_name
-            FROM citations
+            SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+                   c.reference_type_name, rt.display_name
+            FROM citations c
+            JOIN reference_types rt ON c.reference_type_name = rt.name
         """)
     )
     citations = result.fetchall()
@@ -38,6 +40,7 @@ def get_all_citations():
             year=row.year,
             publisher=row.publisher,
             reference_type_name=row.reference_type_name,
+            reference_type_display_name=row.display_name,
         )
         for row in citations
     ]
@@ -74,9 +77,11 @@ def citation_key_exists(citation_key):
 
 def get_citation_by_id(citation_id):
     sql = text("""
-        SELECT id, citation_key, author, title, year, publisher, reference_type_name
-        FROM citations
-        WHERE id = :id
+        SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+               c.reference_type_name, rt.display_name
+        FROM citations c
+        JOIN reference_types rt ON c.reference_type_name = rt.name
+        WHERE c.id = :id
     """)
     row = db.session.execute(sql, {"id": citation_id}).fetchone()
 
@@ -91,6 +96,7 @@ def get_citation_by_id(citation_id):
         year=row.year,
         publisher=row.publisher,
         reference_type_name=row.reference_type_name,
+        reference_type_display_name=row.display_name,
     )
 
 

@@ -12,6 +12,7 @@ class Citation:
         volume=None,
         pages=None,
         publisher=None,
+        reference_type_display_name=None,
     ):
         self.citation_id = citation_id
         self.citation_key = citation_key
@@ -24,6 +25,7 @@ class Citation:
         self.volume = volume
         self.pages = pages
         self.publisher = publisher
+        self.reference_type_display_name = reference_type_display_name
 
     def __str__(self):
         return f"{self.citation_key}: {self.author}, {self.title} ({self.year})"
