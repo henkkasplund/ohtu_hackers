@@ -17,7 +17,7 @@ def create_todo(content):
 
 
 def get_reference_types():
-    result = db.session.execute(text("SELECT id, name FROM reference_types"))
+    result = db.session.execute(text("SELECT id, name, display_name FROM reference_types"))
     return result.fetchall()
 
 
