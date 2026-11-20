@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Tallennetut lähteet</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>Tallennetut lähteet</h1>
@@ -36,6 +37,6 @@
         <p>Ei tallennettuja lähteitä vielä.</p>
     {% endif %}
 
-    <p><a href="/">Takaisin etusivulle</a></p>
+    <p><a href="/" class="btn btn-secondary">Takaisin etusivulle</a></p>
 </body>
 </html>
