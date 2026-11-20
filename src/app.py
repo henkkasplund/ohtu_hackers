@@ -51,6 +51,30 @@ def show_references():
     return render_template("sources.html", references=references)
 
 
+@app.route("/references/<int:citation_id>")
+def show_reference(citation_id):
+    reference = citation_repository.get_citation_by_id(citation_id)
+
+    if reference is None:
+        return "Viitettä ei löytynyt.", 404
+
+    return render_template("reference.html", reference=reference)
+
+
+@app.route("/references/<int:citation_id>/delete", methods=["GET", "POST"])
+def delete_reference(citation_id):
+    reference = citation_repository.get_citation_by_id(citation_id)
+
+    if reference is None:
+        return "Viitettä ei löytynyt.", 404
+
+    if request.method == "POST":
+        citation_repository.delete_citation(citation_id)
+        return redirect("/references")
+
+    return render_template("delete_reference.html", reference=reference)
+
+
 @app.route("/new_todo")
 def new():
     return render_template("new_todo.html")

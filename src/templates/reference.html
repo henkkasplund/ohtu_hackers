@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <title>Viitteen tiedot</title>
+</head>
+<body>
+    <h1>Viitteen tiedot</h1>
+
+    <table border="1" cellpadding="8" style="border-collapse: collapse;">
+        <thead>
+            <tr>
+                <th>Avain</th>
+                <th>Kirjoittaja</th>
+                <th>Otsikko</th>
+                <th>Vuosi</th>
+                <th>Kustantaja</th>
+                <th>Tyyppi</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ reference.citation_key }}</td>
+                <td>{{ reference.author }}</td>
+                <td>{{ reference.title }}</td>
+                <td>{{ reference.year }}</td>
+                <td>{{ reference.publisher }}</td>
+                <td>{{ reference.reference_type_name }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <form action="/references/{{ reference.citation_id }}/delete" method="get">
+        <p><button type="submit">Poista</button></p>
+    </form>
+    <p><a href="/references">Takaisin lähdelistaan</a></p>
+</body>
+</html>
