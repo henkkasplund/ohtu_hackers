@@ -4,6 +4,7 @@ import util
 from config import app, test_env
 from db_helper import reset_db
 from repositories import citation_repository
+from bibtex import create_bibtex
 
 
 ## @app.route("/")
@@ -58,7 +59,8 @@ def show_reference(citation_id):
     if reference is None:
         return "Viitettä ei löytynyt.", 404
 
-    return render_template("reference.html", reference=reference)
+    bibtex = create_bibtex(reference)
+    return render_template("reference.html", reference=reference, bibtex=bibtex)
 
 
 @app.route("/references/<int:citation_id>/delete", methods=["GET", "POST"])
