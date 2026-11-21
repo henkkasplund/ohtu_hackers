@@ -1,17 +1,12 @@
 from flask import jsonify, redirect, render_template, request
 
 import util
+from bibtex import create_bibtex
 from config import app, test_env
 from db_helper import reset_db
 from repositories import citation_repository
-from bibtex import create_bibtex
 
 
-## @app.route("/")
-## def index():
-## todos = get_todos()
-## unfinished = len([todo for todo in todos if not todo.done])
-## return render_template("index.html", todos=todos, unfinished=unfinished)
 @app.route("/")
 def index():
 
@@ -75,6 +70,13 @@ def delete_reference(citation_id):
         return redirect("/references")
 
     return render_template("delete_reference.html", reference=reference)
+
+
+@app.route("/download")
+def download_references():
+    references = citation_repository.get_all_citations()
+    bibtex = [create_bibtex(ref) for ref in references]
+    return render_template("download.html", bibtex=bibtex)
 
 
 @app.route("/new_todo")
