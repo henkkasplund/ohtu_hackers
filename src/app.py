@@ -74,7 +74,9 @@ def delete_reference(citation_id):
 
 @app.route("/download")
 def download_references():
-    return render_template("download.html")
+    references = citation_repository.get_all_citations()
+    bibtex = [create_bibtex(ref) for ref in references]
+    return render_template("download.html", bibtex=bibtex)
 
 
 @app.route("/new_todo")
