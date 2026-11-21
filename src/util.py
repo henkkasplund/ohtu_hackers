@@ -34,7 +34,7 @@ def create_book_citation(form_data):
 
 
 def validate_reference(citation, exclude_citation_id=None):
-    if citation.reference_type_name == "Kirja":
+    if citation.reference_type_name == "book":
         required_fields = [
             citation.citation_key,
             citation.author,
