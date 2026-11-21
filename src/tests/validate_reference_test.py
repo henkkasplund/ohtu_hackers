@@ -13,7 +13,7 @@ class TestReferenceValidation(unittest.TestCase):
             title="Clean Code",
             year="2008",
             publisher="Prentice Hall",
-            reference_type_name="book",
+            reference_type_name="Kirja",
         )
 
     @patch("util.citation_repository.citation_key_exists", return_value=False)
