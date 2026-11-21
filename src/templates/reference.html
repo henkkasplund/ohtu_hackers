@@ -1,5 +1,10 @@
-<!DOCTYPE html>
-<html lang="fi">
+{% extends "layout.html" %}
+
+{% block title %}
+Create a new todo
+{% endblock %}
+
+{% block body %}
 <head>
     <meta charset="UTF-8">
     <title>Viitteen tiedot</title>
@@ -37,6 +42,10 @@
             <button type="submit">Poista</button>
         </form>
     </div>
+    <h2>BibTeX</h2>
+    <pre>{{ bibtex }}</pre>
     <p><a href="/references">Takaisin lähdelistaan</a></p>
 </body>
 </html>
+
+{% endblock %}

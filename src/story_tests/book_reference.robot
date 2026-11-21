@@ -68,6 +68,18 @@ Book Reference With Existing Key Is Rejected
     Get Text  tbody tr  *=  Martin09
     Get Text  tbody tr  *=  Clean Code
 
+Book Reference Page Shows BibTeX
+    Add Book Reference  Martin09  Clean Code
+
+    Go To  ${HOME_URL}/references
+    Click  text=Martin09
+
+    Get Text  pre  *=  @book{Martin09,
+    Get Text  pre  *=  author = {Robert Martin}
+    Get Text  pre  *=  title = {Clean Code}
+    Get Text  pre  *=  year = {2008}
+    Get Text  pre  *=  publisher = {Prentice Hall}
+
 *** Keywords ***
 Add Book Reference
     [Arguments]  ${key}  ${title}
