@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block body %}
+<h1>Muokkaa viitettä</h1>
+
+<form action="/references/{{ reference.citation_id }}/edit_reference" method="GET">
+  <label for="reference_type_name">Viitetyyppi:</label>
+  <select id="reference_type_name" name="reference_type_name" required>
+    <option value="" disabled {% if not selected_type %}selected{% endif %}>Valitse viitetyyppi...</option>
+    {% for type in reference_types %}
+      <option value="{{ type.name }}" {% if selected_type == type.name %}selected{% endif %}>
+        {{ type.display_name }}
+      </option>
+    {% endfor %}
+  </select>
+  <button type="submit">Valitse</button>
+</form>
+
+<hr>
+
+{% if selected_type == "book" %}
+  <form action="/references/{{ reference.citation_id }}/edit_reference" method="POST">
+    <input type="hidden" name="reference_type_name" value="{{ selected_type }}">
+
+    <div>
+      <label for="citation_key">Viiteavain (esim. Martin09):</label>
+      <input type="text" id="citation_key" name="citation_key" value="{{ reference.citation_key }}" required>
+    </div>
+
+    <div>
+      <label for="author">Tekijä (Author):</label>
+      <input type="text" id="author" name="author" value="{{ reference.author }}" required>
+    </div>
+
+    <div>
+      <label for="title">Otsikko (Title):</label>
+      <input type="text" id="title" name="title" value="{{ reference.title }}" required>
+    </div>
+
+    <div>
+      <label for="year">Vuosi (Year):</label>
+      <input type="text" id="year" name="year" value="{{ reference.year }}" pattern="[0-9]{4}" title="Syötä vuosiluku numeroina (esim. 2000)" required>
+    </div>
+
+    <div>
+      <label for="publisher">Kustantaja (Publisher):</label>
+      <input type="text" id="publisher" name="publisher" value="{{ reference.publisher or '' }}" required>
+    </div>
+
+    <button type="submit">Muokkaa kirja</button>
+  </form>
+{% endif %}
+<p><a href="/">Takaisin etusivulle</a></p>
+{% endblock %}
