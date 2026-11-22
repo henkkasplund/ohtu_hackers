@@ -41,6 +41,39 @@ def add_reference():
     )
 
 
+@app.route(
+    "/references/<int:citation_id>/edit_reference", methods=["GET", "POST"]
+)
+def edit_existing_reference(citation_id):
+    reference = citation_repository.get_citation_by_id(citation_id)
+
+    if reference is None:
+        return "Viitettä ei löytynyt.", 404
+
+    if request.method == "POST":
+        style_name = request.form.get("reference_types_name")
+
+        try:
+            if style_name == "Kirja":
+                book = util.create_book_citation(request.form)
+                util.validate_reference(book, exclude_citation_id=citation_id)
+                citation_repository.update_book(citation_id, book)
+            else:
+                raise util.UserInputError("Tuntematon viitetyyppi!")
+        except util.UserInputError as error:
+            return str(error), 400
+
+        return redirect(f"/references/{citation_id}")
+
+    reference_types = citation_repository.get_reference_types()
+    return render_template(
+        "edit_reference.html",
+        reference_types=reference_types,
+        selected_style=reference.reference_type_name,
+        reference=reference,
+    )
+
+
 @app.route("/references")
 def show_references():
     references = citation_repository.get_all_citations()
