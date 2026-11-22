@@ -1,12 +1,14 @@
+{% extends "layout.html" %}
+{% block body %}
 <h1>Muokkaa viitettä</h1>
 
-<form action="/edit_reference" method="GET">
-  <label for="style">Viitetyyli:</label>
-  <select id="style" name="style" required>
-    <option value="" disabled {% if not selected_style %}selected{% endif %}>Valitse viitetyyli...</option>
+<form action="/references/{{ reference.citation_id }}/edit_reference" method="GET">
+  <label for="reference_type_name">Viitetyyppi:</label>
+  <select id="reference_type_name" name="reference_type_name" required>
+    <option value="" disabled {% if not selected_type %}selected{% endif %}>Valitse viitetyyppi...</option>
     {% for type in reference_types %}
-      <option value="{{ type.name }}" {% if selected_style == type.name %}selected{% endif %}>
-        {{ type.name }}
+      <option value="{{ type.name }}" {% if selected_type == type.name %}selected{% endif %}>
+        {{ type.display_name }}
       </option>
     {% endfor %}
   </select>
@@ -15,9 +17,9 @@
 
 <hr>
 
-{% if selected_style == "Kirja" %}
+{% if selected_type == "book" %}
   <form action="/references/{{ reference.citation_id }}/edit_reference" method="POST">
-    <input type="hidden" name="reference_types_name" value="{{ selected_style }}">
+    <input type="hidden" name="reference_type_name" value="{{ selected_type }}">
 
     <div>
       <label for="citation_key">Viiteavain (esim. Martin09):</label>
@@ -48,3 +50,4 @@
   </form>
 {% endif %}
 <p><a href="/">Takaisin etusivulle</a></p>
+{% endblock %}

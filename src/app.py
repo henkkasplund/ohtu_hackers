@@ -51,10 +51,10 @@ def edit_existing_reference(citation_id):
         return "Viitettä ei löytynyt.", 404
 
     if request.method == "POST":
-        style_name = request.form.get("reference_types_name")
+        reference_type_name = request.form.get("reference_type_name")
 
         try:
-            if style_name == "Kirja":
+            if reference_type_name == "book":
                 book = util.create_book_citation(request.form)
                 util.validate_reference(book, exclude_citation_id=citation_id)
                 citation_repository.update_book(citation_id, book)
@@ -69,7 +69,7 @@ def edit_existing_reference(citation_id):
     return render_template(
         "edit_reference.html",
         reference_types=reference_types,
-        selected_style=reference.reference_type_name,
+        selected_type=reference.reference_type_name,
         reference=reference,
     )
 
