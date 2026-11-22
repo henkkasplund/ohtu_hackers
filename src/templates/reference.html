@@ -1,10 +1,5 @@
-{% extends "layout.html" %}
-
-{% block title %}
-Create a new todo
-{% endblock %}
-
-{% block body %}
+<!DOCTYPE html>
+<html lang="fi">
 <head>
     <meta charset="UTF-8">
     <title>Viitteen tiedot</title>
@@ -34,18 +29,11 @@ Create a new todo
             </tr>
         </tbody>
     </table>
-    <div style="display: flex; gap: 8px;">
-        <form action="/references/{{ reference.citation_id }}/edit_reference" method="get">
-            <button type="submit">Muokkaa</button>
-        </form>
-        <form action="/references/{{ reference.citation_id }}/delete" method="get">
-            <button type="submit">Poista</button>
-        </form>
-    </div>
+    <form action="/references/{{ reference.citation_id }}/delete" method="get">
+        <p><button type="submit">Poista</button></p>
+    </form>
     <h2>BibTeX</h2>
-    <pre>{{ bibtex }}</pre>
+        <pre>{{ bibtex }}</pre>
     <p><a href="/references">Takaisin lähdelistaan</a></p>
 </body>
 </html>
-
-{% endblock %}
