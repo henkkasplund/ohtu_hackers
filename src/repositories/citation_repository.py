@@ -75,18 +75,6 @@ def citation_key_exists(citation_key):
     return result is not None
 
 
-def citation_key_exists_except(citation_key, citation_id):
-    sql = text("""
-        SELECT 1 FROM citations
-        WHERE citation_key = :citation_key AND id != :citation_id
-    """)
-    result = db.session.execute(
-        sql,
-        {"citation_key": citation_key, "citation_id": citation_id},
-    ).fetchone()
-    return result is not None
-
-
 def get_citation_by_id(citation_id):
     sql = text("""
         SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
@@ -110,32 +98,6 @@ def get_citation_by_id(citation_id):
         reference_type_name=row.reference_type_name,
         reference_type_display_name=row.display_name,
     )
-
-
-def update_book(citation_id, book):
-    sql = text("""
-        UPDATE citations
-        SET citation_key = :citation_key,
-            author = :author,
-            title = :title,
-            year = :year,
-            publisher = :publisher,
-            reference_type_name = :reference_type_name
-        WHERE id = :citation_id
-    """)
-    db.session.execute(
-        sql,
-        {
-            "citation_id": citation_id,
-            "citation_key": book.citation_key,
-            "author": book.author,
-            "title": book.title,
-            "year": int(book.year),
-            "publisher": book.publisher,
-            "reference_type_name": book.reference_type_name,
-        },
-    )
-    db.session.commit()
 
 
 def delete_citation(citation_id):
