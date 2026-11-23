@@ -2,7 +2,7 @@
 **Huom:** Sprintissä käytetty kierrosmallia
 
 ## Hyvin menneet aspektit ##
-- Saatiin kaikki 1.sprintin asiakkaan kanssa sovitut User Storyt valmiiksi (=Hyvä työmäärä)
+- Saatiin kaikki 1.sprintin asiakkaan kanssa sovitut User Storyt valmiiksi (=Hyvä tuottavuus)
 
 - Tiimityö tosi hyvällä tasolla. Kaikki sai koordinoituu asiat hyvin ja auttoi toisiaan tarpeen tullessa
 
