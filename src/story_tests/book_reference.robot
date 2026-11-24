@@ -80,6 +80,41 @@ Book Reference Page Shows BibTeX
     Get Text  pre  *=  year = {2008}
     Get Text  pre  *=  publisher = {Prentice Hall}
 
+Book Reference Can Be Deleted
+    Add Book Reference  Martin09  Clean Code
+    Add Book Reference  Martin06  Clean Architecture
+
+    Go To  ${HOME_URL}/references
+    Get Element Count  tbody tr  ==  2
+    Click  text=Martin09
+
+    Click  button >> text=Poista
+    Get Title  ==  Vahvista poisto
+    Get Text  body  *=  Martin09
+
+    Click  button >> text=Poista viite
+    Get Url  ==  ${HOME_URL}/references
+
+    Get Element Count  tbody tr  ==  1
+    Get Text  tbody tr  *=  Martin06
+
+Cancelling Book Reference Deletion Keeps Reference
+    Add Book Reference  Martin09  Clean Code
+
+    Go To  ${HOME_URL}/references
+    Click  text=Martin09
+
+    Click  button >> text=Poista
+    Get Title  ==  Vahvista poisto
+
+    Click  text=Peruuta
+    Get Title  ==  Viitteen tiedot
+
+    Go To  ${HOME_URL}/references
+    Get Element Count  tbody tr  ==  1
+    Get Text  tbody tr  *=  Martin09
+    Get Text  tbody tr  *=  Clean Code
+
 *** Keywords ***
 Add Book Reference
     [Arguments]  ${key}  ${title}
