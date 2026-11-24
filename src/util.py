@@ -48,7 +48,7 @@ def validate_reference(citation, exclude_citation_id=None):
 
         current_year = datetime.now().year
         if not citation.year.isdigit() or not (
-            1 <= int(citation.year) <= current_year
+            0 <= int(citation.year) <= current_year
         ):
             raise UserInputError(
                 f"Vuoden täytyy olla kokonaisluku väliltä 1–{current_year}"
