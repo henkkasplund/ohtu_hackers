@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-    <meta charset="UTF-8">
-    <title>Vahvista poisto</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% block title %}
+    Vahvista poisto
+{% endblock %}
+
+{% block body %}
     <h1>Vahvista poisto</h1>
 
     <p>Haluatko varmasti poistaa tämän viitteen?</p>
@@ -17,5 +16,5 @@
     <p>
         <a href="/references/{{ reference.citation_id }}">Peruuta</a>
     </p>
-</body>
-</html>
+
+{% endblock %}
