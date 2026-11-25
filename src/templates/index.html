@@ -16,6 +16,9 @@
             <th>Otsikko</th>
             <th>Vuosi</th>
             <th>Kustantaja</th>
+            <th>Lehti</th>
+            <th>Vuosikerta</th>
+            <th>Sivut</th>
             <th>Tyyppi</th>
         </tr>
         </thead>
@@ -26,7 +29,10 @@
             <td>{{ ref.author }}</td>
             <td>{{ ref.title }}</td>
             <td>{{ ref.year }}</td>
-            <td>{{ ref.publisher }}</td>
+            <td>{{ ref.publisher or "" }}</td>
+            <td>{{ ref.journal or "" }}</td>
+            <td>{{ ref.volume or "" }}</td>
+            <td>{{ ref.pages or "" }}</td>
             <td>{{ ref.reference_type_display_name }}</td>
         </tr>
         {% endfor %}

@@ -22,7 +22,7 @@
 
     <hr>
 
-    {% if selected_type == "book" %}
+    {% if selected_type in ("book", "article") %}
       <form action="/add_reference" method="POST">
         <input type="hidden" name="reference_type_name" value="{{ selected_type }}">
 
@@ -46,12 +46,31 @@
           <input type="text" id="year" name="year" pattern="[0-9]{1,4}" title="Syötä vuosiluku numeroina (esim. 2000)" required>
         </div>
 
-        <div>
-          <label for="publisher">Kustantaja (Publisher):</label>
-          <input type="text" id="publisher" name="publisher" required>
-        </div>
+        {% if selected_type == "book" %}
+          <div>
+            <label for="publisher">Kustantaja (Publisher):</label>
+            <input type="text" id="publisher" name="publisher" required>
+          </div>
+        {% elif selected_type == "article" %}
+          <div>
+            <label for="journal">Lehti (Journal):</label>
+            <input type="text" id="journal" name="journal" required>
+          </div>
 
-        <button type="submit" class="btn">Tallenna kirja</button>
+          <div>
+            <label for="volume">Vuosikerta (Volume):</label>
+            <input type="text" id="volume" name="volume" pattern="[0-9]+" title="Syötä vuosikerta numerona (esim. 6)">
+          </div>
+
+          <div>
+            <label for="pages">Sivut (Pages):</label>
+            <input type="text" id="pages" name="pages" pattern="[0-9]+(-{1,2}[0-9]+)?" title="Syötä sivunumero tai sivuväli (esim. 38--46)">
+          </div>
+        {% endif %}
+
+        <button type="submit" class="btn">
+          Tallenna {{ "artikkeli" if selected_type == "article" else "kirja" }}
+        </button>
       </form>
     {% endif %}
 

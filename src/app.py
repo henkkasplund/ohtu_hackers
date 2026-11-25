@@ -10,9 +10,7 @@ from repositories import citation_repository
 @app.route("/")
 def index():
     references = citation_repository.get_all_citations()
-    return render_template(
-        "index.html", references=references
-    )
+    return render_template("index.html", references=references)
 
 
 @app.route("/add_reference", methods=["GET", "POST"])
@@ -25,6 +23,10 @@ def add_reference():
                 book = util.create_book_citation(request.form)
                 util.validate_reference(book)
                 citation_repository.save_book(book)
+            elif reference_type_name == "article":
+                article = util.create_article_citation(request.form)
+                util.validate_reference(article)
+                citation_repository.save_article(article)
             else:
                 raise util.UserInputError("Tuntematon viitetyyppi!")
         except util.UserInputError as error:
@@ -58,6 +60,12 @@ def edit_existing_reference(citation_id):
                 book = util.create_book_citation(request.form)
                 util.validate_reference(book, exclude_citation_id=citation_id)
                 citation_repository.update_book(citation_id, book)
+            elif reference_type_name == "article":
+                article = util.create_article_citation(request.form)
+                util.validate_reference(
+                    article, exclude_citation_id=citation_id
+                )
+                citation_repository.update_article(citation_id, article)
             else:
                 raise util.UserInputError("Tuntematon viitetyyppi!")
         except util.UserInputError as error:
