@@ -17,7 +17,9 @@ def create_todo(content):
 
 
 def get_reference_types():
-    result = db.session.execute(text("SELECT id, name, display_name FROM reference_types"))
+    result = db.session.execute(
+        text("SELECT id, name, display_name FROM reference_types")
+    )
     return result.fetchall()
 
 
@@ -25,7 +27,8 @@ def get_all_citations():
     result = db.session.execute(
         text("""
             SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
-                   c.reference_type_name, rt.display_name
+            c.journal, c.volume, c.pages,
+            c.reference_type_name, rt.display_name
             FROM citations c
             JOIN reference_types rt ON c.reference_type_name = rt.name
         """)
@@ -39,6 +42,9 @@ def get_all_citations():
             title=row.title,
             year=row.year,
             publisher=row.publisher,
+            journal=row.journal,
+            volume=row.volume,
+            pages=row.pages,
             reference_type_name=row.reference_type_name,
             reference_type_display_name=row.display_name,
         )
@@ -69,6 +75,33 @@ def save_book(book):
     db.session.commit()
 
 
+def save_article(article):
+    sql = text("""
+        INSERT INTO citations (
+            citation_key, author, title, year,
+            journal, volume, pages, reference_type_name
+        )
+        VALUES (
+            :citation_key, :author, :title, :year,
+            :journal, :volume, :pages, :reference_type_name
+        )
+    """)
+    db.session.execute(
+        sql,
+        {
+            "citation_key": article.citation_key,
+            "author": article.author,
+            "title": article.title,
+            "year": int(article.year),
+            "journal": article.journal,
+            "volume": article.volume,
+            "pages": article.pages,
+            "reference_type_name": article.reference_type_name,
+        },
+    )
+    db.session.commit()
+
+
 def citation_key_exists(citation_key):
     sql = text("SELECT 1 FROM citations WHERE citation_key = :citation_key")
     result = db.session.execute(sql, {"citation_key": citation_key}).fetchone()
@@ -90,7 +123,8 @@ def citation_key_exists_except(citation_key, citation_id):
 def get_citation_by_id(citation_id):
     sql = text("""
         SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
-               c.reference_type_name, rt.display_name
+        c.journal, c.volume, c.pages,
+        c.reference_type_name, rt.display_name
         FROM citations c
         JOIN reference_types rt ON c.reference_type_name = rt.name
         WHERE c.id = :id
@@ -107,6 +141,9 @@ def get_citation_by_id(citation_id):
         title=row.title,
         year=row.year,
         publisher=row.publisher,
+        journal=row.journal,
+        volume=row.volume,
+        pages=row.pages,
         reference_type_name=row.reference_type_name,
         reference_type_display_name=row.display_name,
     )
@@ -133,6 +170,36 @@ def update_book(citation_id, book):
             "year": int(book.year),
             "publisher": book.publisher,
             "reference_type_name": book.reference_type_name,
+        },
+    )
+    db.session.commit()
+
+
+def update_article(citation_id, article):
+    sql = text("""
+        UPDATE citations
+        SET citation_key = :citation_key,
+            author = :author,
+            title = :title,
+            year = :year,
+            journal = :journal,
+            volume = :volume,
+            pages = :pages,
+            reference_type_name = :reference_type_name
+        WHERE id = :citation_id
+    """)
+    db.session.execute(
+        sql,
+        {
+            "citation_id": citation_id,
+            "citation_key": article.citation_key,
+            "author": article.author,
+            "title": article.title,
+            "year": int(article.year),
+            "journal": article.journal,
+            "volume": article.volume,
+            "pages": article.pages,
+            "reference_type_name": article.reference_type_name,
         },
     )
     db.session.commit()
