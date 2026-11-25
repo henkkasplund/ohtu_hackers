@@ -19,8 +19,8 @@ Book Reference Can Be Submitted
     Click  button >> text=Tallenna kirja
     Get Url  ==  ${HOME_URL}/
 
-    Go To  ${HOME_URL}/references
-    Get Title  ==  Tallennetut lähteet
+    Go To  ${HOME_URL}
+    Get Title  ==  Viiteluettelo
     Get Text  tbody tr  *=  Martin09
     Get Text  tbody tr  *=  Robert Martin
     Get Text  tbody tr  *=  Clean Code
@@ -63,15 +63,20 @@ Book Reference With Existing Key Is Rejected
     Add Book Reference  Martin09  Toinen kirja
     Get Text  body  *=  Viiteavain 'Martin09' on jo käytössä!
 
-    Go To  ${HOME_URL}/references
+    Go To  ${HOME_URL}
     Get Element Count  tbody tr  ==  1
     Get Text  tbody tr  *=  Martin09
     Get Text  tbody tr  *=  Clean Code
 
+Front Page Shows Message When No References
+    Go To  ${HOME_URL}
+    Get Title  ==  Viiteluettelo
+    Get Text  body  *=  Ei tallennettuja viitteitä.
+
 Book Reference Page Shows BibTeX
     Add Book Reference  Martin09  Clean Code
 
-    Go To  ${HOME_URL}/references
+    Go To  ${HOME_URL}
     Click  text=Martin09
 
     Get Text  pre  *=  @book{Martin09,
@@ -84,7 +89,7 @@ Book Reference Can Be Deleted
     Add Book Reference  Martin09  Clean Code
     Add Book Reference  Martin06  Clean Architecture
 
-    Go To  ${HOME_URL}/references
+    Go To  ${HOME_URL}
     Get Element Count  tbody tr  ==  2
     Click  text=Martin09
 
@@ -93,7 +98,7 @@ Book Reference Can Be Deleted
     Get Text  body  *=  Martin09
 
     Click  button >> text=Poista viite
-    Get Url  ==  ${HOME_URL}/references
+    Get Url  ==  ${HOME_URL}/
 
     Get Element Count  tbody tr  ==  1
     Get Text  tbody tr  *=  Martin06
@@ -101,7 +106,7 @@ Book Reference Can Be Deleted
 Cancelling Book Reference Deletion Keeps Reference
     Add Book Reference  Martin09  Clean Code
 
-    Go To  ${HOME_URL}/references
+    Go To  ${HOME_URL}
     Click  text=Martin09
 
     Click  button >> text=Poista
@@ -110,7 +115,7 @@ Cancelling Book Reference Deletion Keeps Reference
     Click  text=Peruuta
     Get Title  ==  Viitteen tiedot
 
-    Go To  ${HOME_URL}/references
+    Go To  ${HOME_URL}
     Get Element Count  tbody tr  ==  1
     Get Text  tbody tr  *=  Martin09
     Get Text  tbody tr  *=  Clean Code

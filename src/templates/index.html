@@ -1,12 +1,44 @@
-{% extends "layout.html" %} {% block title %} Todo app {% endblock %} {% block
-body %}
+{% extends "layout.html" %}
 
-<h2>Hei ohtu hackerit!</h2>
+{% block title %}
+    Viiteluettelo
+{% endblock %}
 
-<p>
-    <a href="/add_reference" class="btn">Lisää viite</a>
-    <a href="/references" class="btn btn-secondary">Näytä lähteet</a>
-    <a href="/download" class="btn btn-secondary">Lataa lähteet</a>
-</p>
+{% block body %}
+    <p>
+        <a href="/add_reference" class="btn">Lisää viite</a>
+        <a href="/download" class="btn btn-secondary">Lataa viitteet</a>
+    </p>
+
+    <h1>Tallennetut viitteet</h1>
+
+    {% if references %}
+    <table border="1" cellpadding="8" style="border-collapse: collapse;">
+        <thead>
+        <tr>
+            <th>Avain</th>
+            <th>Kirjoittaja</th>
+            <th>Otsikko</th>
+            <th>Vuosi</th>
+            <th>Kustantaja</th>
+            <th>Tyyppi</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ref in references %}
+        <tr>
+            <td><a href="/references/{{ ref.citation_id }}">{{ ref.citation_key }}</a></td>
+            <td>{{ ref.author }}</td>
+            <td>{{ ref.title }}</td>
+            <td>{{ ref.year }}</td>
+            <td>{{ ref.publisher }}</td>
+            <td>{{ ref.reference_type_display_name }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>Ei tallennettuja viitteitä.</p>
+    {% endif %}
 
 {% endblock %}

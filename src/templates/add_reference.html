@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="fi">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <title>Lisää viite</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
-</head>
-<body>
-  <div class="container">
+{% extends "layout.html" %}
+
+{% block title %}
+    Lisää viite
+{% endblock %}
+
+{% block body %}
     <h1>Lisää viite</h1>
 
     <form action="/add_reference" method="GET">
@@ -46,7 +43,7 @@
 
         <div>
           <label for="year">Vuosi (Year):</label>
-          <input type="text" id="year" name="year" pattern="[0-9]{1-4}" title="Syötä vuosiluku numeroina (esim. 2000)" required>
+          <input type="text" id="year" name="year" pattern="[0-9]{1,4}" title="Syötä vuosiluku numeroina (esim. 2000)" required>
         </div>
 
         <div>
@@ -58,7 +55,5 @@
       </form>
     {% endif %}
 
-    <p><a href="/" class="btn btn-secondary">Takaisin etusivulle</a></p>
-  </div>
-</body>
-</html>
+    <p><a href="/" class="btn btn-secondary">Takaisin viiteluetteloon</a></p>
+{% endblock %}

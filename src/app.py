@@ -9,9 +9,9 @@ from repositories import citation_repository
 
 @app.route("/")
 def index():
-
+    references = citation_repository.get_all_citations()
     return render_template(
-        "index.html",
+        "index.html", references=references
     )
 
 
@@ -74,12 +74,6 @@ def edit_existing_reference(citation_id):
     )
 
 
-@app.route("/references")
-def show_references():
-    references = citation_repository.get_all_citations()
-    return render_template("sources.html", references=references)
-
-
 @app.route("/references/<int:citation_id>")
 def show_reference(citation_id):
     reference = citation_repository.get_citation_by_id(citation_id)
@@ -100,7 +94,7 @@ def delete_reference(citation_id):
 
     if request.method == "POST":
         citation_repository.delete_citation(citation_id)
-        return redirect("/references")
+        return redirect("/")
 
     return render_template("delete_reference.html", reference=reference)
 
