@@ -27,7 +27,7 @@ def get_all_citations():
     result = db.session.execute(
         text("""
             SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
-            c.journal, c.volume, c.pages,
+            c.booktitle, c.journal, c.volume, c.pages,
             c.reference_type_name, rt.display_name
             FROM citations c
             JOIN reference_types rt ON c.reference_type_name = rt.name
@@ -42,6 +42,7 @@ def get_all_citations():
             title=row.title,
             year=row.year,
             publisher=row.publisher,
+            booktitle=row.booktitle,
             journal=row.journal,
             volume=row.volume,
             pages=row.pages,
@@ -102,6 +103,31 @@ def save_article(article):
     db.session.commit()
 
 
+def save_inproceedings(inproceedings):
+    sql = text("""
+        INSERT INTO citations (
+            citation_key, author, title, year,
+            booktitle, reference_type_name
+        )
+        VALUES (
+            :citation_key, :author, :title, :year,
+            :booktitle, :reference_type_name
+        )
+    """)
+    db.session.execute(
+        sql,
+        {
+            "citation_key": inproceedings.citation_key,
+            "author": inproceedings.author,
+            "title": inproceedings.title,
+            "year": int(inproceedings.year),
+            "booktitle": inproceedings.booktitle,
+            "reference_type_name": inproceedings.reference_type_name,
+        },
+    )
+    db.session.commit()
+
+
 def citation_key_exists(citation_key):
     sql = text("SELECT 1 FROM citations WHERE citation_key = :citation_key")
     result = db.session.execute(sql, {"citation_key": citation_key}).fetchone()
@@ -123,7 +149,7 @@ def citation_key_exists_except(citation_key, citation_id):
 def get_citation_by_id(citation_id):
     sql = text("""
         SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
-        c.journal, c.volume, c.pages,
+        c.booktitle, c.journal, c.volume, c.pages,
         c.reference_type_name, rt.display_name
         FROM citations c
         JOIN reference_types rt ON c.reference_type_name = rt.name
@@ -141,6 +167,7 @@ def get_citation_by_id(citation_id):
         title=row.title,
         year=row.year,
         publisher=row.publisher,
+        booktitle=row.booktitle,
         journal=row.journal,
         volume=row.volume,
         pages=row.pages,
@@ -200,6 +227,32 @@ def update_article(citation_id, article):
             "volume": article.volume,
             "pages": article.pages,
             "reference_type_name": article.reference_type_name,
+        },
+    )
+    db.session.commit()
+
+
+def update_inproceedings(citation_id, inproceedings):
+    sql = text("""
+        UPDATE citations
+        SET citation_key = :citation_key,
+            author = :author,
+            title = :title,
+            year = :year,
+            booktitle = :booktitle,
+            reference_type_name = :reference_type_name
+        WHERE id = :citation_id
+    """)
+    db.session.execute(
+        sql,
+        {
+            "citation_id": citation_id,
+            "citation_key": inproceedings.citation_key,
+            "author": inproceedings.author,
+            "title": inproceedings.title,
+            "year": int(inproceedings.year),
+            "booktitle": inproceedings.booktitle,
+            "reference_type_name": inproceedings.reference_type_name,
         },
     )
     db.session.commit()

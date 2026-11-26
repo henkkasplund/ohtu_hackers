@@ -19,6 +19,7 @@
             <th>Lehti</th>
             <th>Vuosikerta</th>
             <th>Sivut</th>
+            <th>Konferenssijulkaisu</th>
             <th>Tyyppi</th>
         </tr>
         </thead>
@@ -33,6 +34,7 @@
             <td>{{ ref.journal or "" }}</td>
             <td>{{ ref.volume or "" }}</td>
             <td>{{ ref.pages or "" }}</td>
+            <td>{{ ref.booktitle or "" }}</td>
             <td>{{ ref.reference_type_display_name }}</td>
         </tr>
         {% endfor %}
