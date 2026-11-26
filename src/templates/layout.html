@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
   <head>
     <meta charset="utf-8" />
     <meta
@@ -10,6 +10,28 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
   </head>
   <body>
+    <nav class="navbar">
+      <a href="/"
+        {% if request.path == "/" %}
+          class="active"
+        {% endif %}>
+        Viiteluettelo
+      </a>
+
+      <a href="/add_reference"
+        {% if request.path == "/add_reference" %}
+          class="active"
+        {% endif %}>
+        Lisää viite
+      </a>
+
+      <a href="/download"
+        {% if request.path == "/download" %}
+          class="active"
+        {% endif %}>
+        Lataa viitteitä
+      </a>
+    </nav>
     <div class="container">
       {% block body %}{% endblock %}
     </div>
