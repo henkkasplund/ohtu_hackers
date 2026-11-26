@@ -55,6 +55,23 @@ def create_article_citation(form_data):
     )
 
 
+def create_inproceedings_citation(form_data):
+    citation_key = form_data.get("citation_key", "").strip()
+    author = form_data.get("author", "").strip()
+    title = form_data.get("title", "").strip()
+    year = form_data.get("year", "").strip()
+    booktitle = form_data.get("booktitle", "").strip()
+
+    return Citation(
+        citation_key=citation_key,
+        author=author,
+        title=title,
+        year=year,
+        reference_type_name="inproceedings",
+        booktitle=booktitle,
+    )
+
+
 def validate_volume_and_pages(citation):
     if citation.volume and (
         not citation.volume.isdecimal() or int(citation.volume) <= 0
@@ -73,52 +90,43 @@ def validate_volume_and_pages(citation):
 
 
 def validate_reference(citation, exclude_citation_id=None):
+    required_fields = [
+        citation.citation_key,
+        citation.author,
+        citation.title,
+        citation.year,
+    ]
+
     if citation.reference_type_name == "book":
-        required_fields = [
-            citation.citation_key,
-            citation.author,
-            citation.title,
-            citation.year,
-            citation.publisher,
-        ]
-        for value in required_fields:
-            if not value or not value.strip():
-                raise UserInputError("Kaikki kirjan kentät ovat pakollisia!")
-
-        current_year = datetime.now().year
-        if not citation.year.isdigit() or not (
-            1 <= int(citation.year) <= current_year
-        ):
-            raise UserInputError(
-                f"Vuoden täytyy olla kokonaisluku väliltä 1–{current_year}"
-            )
-
+        required_fields.append(citation.publisher)
+        missing_fields_message = "Kaikki kirjan kentät ovat pakollisia!"
     elif citation.reference_type_name == "article":
-        required_fields = [
-            citation.citation_key,
-            citation.author,
-            citation.title,
-            citation.journal,
-            citation.year,
-        ]
-        for value in required_fields:
-            if not value or not value.strip():
-                raise UserInputError(
-                    "Artikkelin avain, tekijä, otsikko, lehti ja vuosi ovat pakollisia!"
-                )
-
-        current_year = datetime.now().year
-        if not citation.year.isdigit() or not (
-            1 <= int(citation.year) <= current_year
-        ):
-            raise UserInputError(
-                f"Vuoden täytyy olla kokonaisluku väliltä 1–{current_year}"
-            )
-
-        validate_volume_and_pages(citation)
-
+        required_fields.append(citation.journal)
+        missing_fields_message = (
+            "Artikkelin avain, tekijä, otsikko, lehti ja vuosi ovat pakollisia!"
+        )
+    elif citation.reference_type_name == "inproceedings":
+        required_fields.append(citation.booktitle)
+        missing_fields_message = (
+            "Konferenssiviitteen kaikki kentät ovat pakollisia!"
+        )
     else:
         raise UserInputError("Tuntematon viitetyyppi!")
+
+    for value in required_fields:
+        if not value or not value.strip():
+            raise UserInputError(missing_fields_message)
+
+    current_year = datetime.now().year
+    if not citation.year.isdigit() or not (
+        1 <= int(citation.year) <= current_year
+    ):
+        raise UserInputError(
+            f"Vuoden täytyy olla kokonaisluku väliltä 1–{current_year}"
+        )
+
+    if citation.reference_type_name == "article":
+        validate_volume_and_pages(citation)
 
     if exclude_citation_id is None:
         duplicate_exists = citation_repository.citation_key_exists(

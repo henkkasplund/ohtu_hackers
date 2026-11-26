@@ -4,7 +4,7 @@
 
 <h3>Viitetyyppi: {{ reference.reference_type_display_name }}</h3>
 
-{% if selected_type in ("book", "article") %}
+{% if selected_type in ("book", "article", "inproceedings") %}
   <form action="/references/{{ reference.citation_id }}/edit_reference" method="POST">
     <input type="hidden" name="reference_type_name" value="{{ selected_type }}">
 
@@ -48,10 +48,21 @@
         <label for="pages">Sivut (Pages):</label>
         <input type="text" id="pages" name="pages" value="{{ reference.pages or '' }}" pattern="[0-9]+(-{1,2}[0-9]+)?" title="Syötä sivunumero tai sivuväli (esim. 38-46)">
       </div>
+    {% elif selected_type == "inproceedings" %}
+      <div>
+        <label for="booktitle">Julkaisun nimi (Booktitle):</label>
+        <input type="text" id="booktitle" name="booktitle" value="{{ reference.booktitle or '' }}" required>
+      </div>  
     {% endif %}
 
     <button type="submit">
-      Muokkaa {{ "artikkeli" if selected_type == "article" else "kirja" }}
+      {% if selected_type == "book" %}
+        Muokkaa kirja
+      {% elif selected_type == "article" %}
+        Muokkaa artikkeli
+      {% elif selected_type == "inproceedings" %}
+        Muokkaa konferenssiviite
+      {% endif %}
     </button>
   </form>
 {% endif %}
