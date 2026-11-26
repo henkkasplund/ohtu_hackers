@@ -1,15 +1,18 @@
-{% extends "layout.html" %} {% block title %} Lataa lähteet {% endblock %} {% block body %}
+{% extends "layout.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Lataa viitteet</title>
-</head>
-<body>
+{% block title %}
+    Lataa viitteet
+{% endblock %}
+
+{% block body %}
     <h1>Lataa viitteet</h1>
-{% for b in bibtex %}
-    <pre>{{ b }}</pre>
-{% else %}
-    <p>Ei tallennettuja viitteitä.</p>
-{% endfor %}
 
+    {% if bibtex %}
+        <p><a href="/download/references.bib" class="btn">Lataa BibTeX-tiedosto</a></p>
+        {% for b in bibtex %}
+            <pre>{{ b }}</pre>
+        {% endfor %}
+    {% else %}
+        <p>Ei tallennettuja viitteitä.</p>
+    {% endif %}
 {% endblock %}
