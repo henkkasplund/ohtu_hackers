@@ -49,6 +49,7 @@ class TestReferenceEditing(unittest.TestCase):
                 "app.citation_repository.get_reference_types",
                 return_value=reference_types,
             ),
+            patch("app.citation_repository.get_all_tags", return_value=[]),
         ):
             response = self.client.get(self.path)
 

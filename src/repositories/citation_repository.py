@@ -26,7 +26,7 @@ def get_reference_types():
 def get_all_citations():
     result = db.session.execute(
         text("""
-            SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+            SELECT c.id, c.citation_key, c.tag, c.author, c.title, c.year, c.publisher,
             c.journal, c.volume, c.pages,
             c.booktitle, c.journal, c.volume, c.pages,
             c.reference_type_name, rt.display_name
@@ -110,11 +110,11 @@ def save_article(article):
 def save_inproceedings(inproceedings):
     sql = text("""
         INSERT INTO citations (
-            citation_key, author, title, year,
+            citation_key, tag, author, title, year,
             booktitle, reference_type_name
         )
         VALUES (
-            :citation_key, :author, :title, :year,
+            :citation_key, :tag, :author, :title, :year,
             :booktitle, :reference_type_name
         )
     """)
@@ -122,6 +122,7 @@ def save_inproceedings(inproceedings):
         sql,
         {
             "citation_key": inproceedings.citation_key,
+            "tag": inproceedings.tag,
             "author": inproceedings.author,
             "title": inproceedings.title,
             "year": int(inproceedings.year),
@@ -245,6 +246,7 @@ def update_inproceedings(citation_id, inproceedings):
     sql = text("""
         UPDATE citations
         SET citation_key = :citation_key,
+            tag = :tag,
             author = :author,
             title = :title,
             year = :year,
@@ -257,6 +259,7 @@ def update_inproceedings(citation_id, inproceedings):
         {
             "citation_id": citation_id,
             "citation_key": inproceedings.citation_key,
+            "tag": inproceedings.tag,
             "author": inproceedings.author,
             "title": inproceedings.title,
             "year": int(inproceedings.year),

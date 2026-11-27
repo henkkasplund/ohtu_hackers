@@ -27,5 +27,5 @@ Reset Application
 Add Tag
     [Arguments]    ${tag_name}
     Go To    ${HOME_URL}/add_reference
-    Fill Text    input#tag_name    ${tag_name}
+    Fill Text    input#new_tag_name    ${tag_name}
     Click    button >> text=Lisää tagi

@@ -1,4 +1,5 @@
 from flask import Response, jsonify, redirect, render_template, request
+from sqlalchemy.exc import IntegrityError
 
 import util
 from bibtex import create_bibtex, create_bibtex_file
@@ -158,8 +159,8 @@ def add_tag():
 
     try:
         citation_repository.add_tag(tag_name)
-    except Exception as e:
-        return f"Virhe lisättäessä tagia: {e!s}", 500
+    except IntegrityError:
+        return "Tagi on jo olemassa.", 400
 
     return redirect("/")
 
