@@ -9,8 +9,27 @@ from repositories import citation_repository
 
 @app.route("/")
 def index():
-    references = citation_repository.get_all_citations()
-    return render_template("index.html", references=references)
+    author = request.args.get("author", "").strip()
+    year_str = request.args.get("year", "").strip()
+
+    year = None
+    if year_str.isdigit():
+        year = int(year_str)
+
+    if author or year is not None:
+        references = citation_repository.search_citations(
+            author=author or None,
+            year=year,
+        )
+    else:
+        references = citation_repository.get_all_citations()
+
+    return render_template(
+        "index.html",
+        references=references,
+        search_author=author,
+        search_year=year_str,
+    )
 
 
 @app.route("/add_reference", methods=["GET", "POST"])

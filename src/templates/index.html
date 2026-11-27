@@ -7,6 +7,30 @@
 {% block body %}
     <h1>Tallennetut viitteet</h1>
 
+    <form action="/" method="GET" style="margin-bottom: 20px;">
+        <label for="author">Kirjoittaja:</label>
+        <input
+            type="text"
+            id="author"
+            name="author"
+            value="{{ search_author or '' }}"
+        />
+
+        <label for="year" style="margin-left: 10px;">Vuosi:</label>
+        <input
+            type="number"
+            id="year"
+            name="year"
+            value="{{ search_year or '' }}"
+        />
+
+        <button type="submit" style="margin-left: 10px;">Hae</button>
+
+        {% if search_author or search_year %}
+            <a href="/" style="margin-left: 10px;">Tyhjennä haku</a>
+        {% endif %}
+    </form>
+
     {% if references %}
     <table border="1" cellpadding="8" style="border-collapse: collapse;">
         <thead>
@@ -40,6 +64,8 @@
         {% endfor %}
         </tbody>
     </table>
+    {% elif search_author or search_year %}
+    <p>Hakuehdoilla ei löytynyt viitteitä.</p>
     {% else %}
     <p>Ei tallennettuja viitteitä.</p>
     {% endif %}

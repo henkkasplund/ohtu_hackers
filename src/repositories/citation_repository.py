@@ -262,3 +262,47 @@ def delete_citation(citation_id):
     sql = text("DELETE FROM citations WHERE id = :id")
     db.session.execute(sql, {"id": citation_id})
     db.session.commit()
+def search_citations(author=None, year=None):
+    conditions = []
+    params = {}
+
+    if author:
+        conditions.append("LOWER(c.author) LIKE :author")
+        params["author"] = f"%{author.strip().lower()}%"
+
+    if year is not None:
+        conditions.append("c.year = :year")
+        params["year"] = year
+
+    where_clause = ""
+    if conditions:
+        where_clause = "WHERE " + " AND ".join(conditions)
+
+    sql = text(f"""
+        SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+        c.booktitle, c.journal, c.volume, c.pages,
+        c.reference_type_name, rt.display_name
+        FROM citations c
+        JOIN reference_types rt ON c.reference_type_name = rt.name
+        {where_clause}
+        ORDER BY c.id DESC
+    """)
+
+    citations = db.session.execute(sql, params).fetchall()
+    return [
+        Citation(
+            citation_id=row.id,
+            citation_key=row.citation_key,
+            author=row.author,
+            title=row.title,
+            year=row.year,
+            publisher=row.publisher,
+            booktitle=row.booktitle,
+            journal=row.journal,
+            volume=row.volume,
+            pages=row.pages,
+            reference_type_name=row.reference_type_name,
+            reference_type_display_name=row.display_name,
+        )
+        for row in citations
+    ]
