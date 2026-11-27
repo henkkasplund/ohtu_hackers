@@ -55,7 +55,8 @@ class TestReferenceEditing(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Viitetyyppi: Kirja", response.data)
         self.assertIn(b'value="Martin09"', response.data)
-        self.assertNotIn(b"<select", response.data)
+        self.assertNotIn(b'id="reference_type_name"', response.data)
+        self.assertIn(b'id="tag_name"', response.data)
         get_citation.assert_called_once_with(self.citation_id)
 
     def test_get_edit_form_returns_404_for_missing_reference(self):

@@ -54,7 +54,6 @@ table {
   margin: 1rem 0;
 }
 
-<<<<<<< HEAD
 .top-forms {
   display: flex;
   align-items: center;
@@ -65,7 +64,6 @@ table {
 .top-forms form {
   margin-bottom: 0;
 }
-=======
 .navbar {
   display: flex;
   flex-wrap: wrap;
@@ -97,4 +95,3 @@ table {
   color: #ffffff;
   background-color: #2563eb;
 }
->>>>>>> origin/main

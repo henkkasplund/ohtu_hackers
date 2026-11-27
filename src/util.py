@@ -96,6 +96,7 @@ def validate_volume_and_pages(citation):
 def validate_reference(citation, exclude_citation_id=None):
     required_fields = [
         citation.citation_key,
+        citation.tag,
         citation.author,
         citation.title,
         citation.year,

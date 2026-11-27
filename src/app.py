@@ -1,4 +1,4 @@
-from flask import jsonify, redirect, render_template, request, Response
+from flask import Response, jsonify, redirect, render_template, request
 
 import util
 from bibtex import create_bibtex, create_bibtex_file
@@ -150,7 +150,6 @@ def download_references():
     return render_template("download.html", bibtex=bibtex)
 
 
-<<<<<<< HEAD
 @app.route("/add_tag", methods=["POST"])
 def add_tag():
     tag_name = request.form.get("tag_name")
@@ -164,7 +163,7 @@ def add_tag():
 
     return redirect("/")
 
-=======
+
 @app.route("/download/references.bib")
 def download_references_bibtex():
     references = citation_repository.get_all_citations()
@@ -174,7 +173,7 @@ def download_references_bibtex():
         mimetype="application/x-bibtex",
         headers={"Content-Disposition": "attachment; filename=references.bib"},
     )
->>>>>>> origin/main
+
 
 @app.route("/new_todo")
 def new():

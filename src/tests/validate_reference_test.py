@@ -29,6 +29,7 @@ class TestReferenceValidation(unittest.TestCase):
         )
         self.valid_inproceedings = Citation(
             citation_key="VPL11",
+            tag="Gradu",
             author="Vihavainen, Arto and Paksula, Matti and Luukkainen, Matti",
             title=(
                 "Extreme Apprenticeship Method in Teaching Programming "
