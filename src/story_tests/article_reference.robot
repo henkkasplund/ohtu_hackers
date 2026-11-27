@@ -11,6 +11,7 @@ Article Reference Can Be Submitted
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  CBH91
+    Select Options By    select#tag_name    label    Gradu
     Fill Text  id=author  Allan Collins and John Seely Brown and Ann Holum
     Fill Text  id=title  Cognitive apprenticeship: making thinking visible
     Fill Text  id=journal  American Educator
@@ -22,7 +23,7 @@ Article Reference Can Be Submitted
     Get Url  ==  ${HOME_URL}/
 
     Get Text  tbody tr  *=  American Educator
-    Get Text  tbody tr td:nth-child(7)  ==  6
+    Get Text  tbody tr td:nth-child(8)  ==  6
     Get Text  tbody tr  *=  38--46
     Get Text  tbody tr  *=  CBH91
     Get Text  tbody tr  *=  Cognitive apprenticeship: making thinking visible
@@ -66,6 +67,7 @@ Add Article Reference
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  CBH91
+    Select Options By    select#tag_name    label    Gradu
     Fill Text  id=author  Allan Collins and John Seely Brown and Ann Holum
     Fill Text  id=title  Cognitive apprenticeship: making thinking visible
     Fill Text  id=journal  American Educator
