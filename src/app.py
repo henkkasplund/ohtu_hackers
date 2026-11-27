@@ -1,7 +1,7 @@
-from flask import jsonify, redirect, render_template, request
+from flask import jsonify, redirect, render_template, request, Response
 
 import util
-from bibtex import create_bibtex
+from bibtex import create_bibtex, create_bibtex_file
 from config import app, test_env
 from db_helper import reset_db
 from repositories import citation_repository
@@ -125,6 +125,16 @@ def download_references():
     bibtex = [create_bibtex(ref) for ref in references]
     return render_template("download.html", bibtex=bibtex)
 
+
+@app.route("/download/references.bib")
+def download_references_bibtex():
+    references = citation_repository.get_all_citations()
+    bibtex_file = create_bibtex_file(references)
+    return Response(
+        bibtex_file,
+        mimetype="application/x-bibtex",
+        headers={"Content-Disposition": "attachment; filename=references.bib"},
+    )
 
 @app.route("/new_todo")
 def new():

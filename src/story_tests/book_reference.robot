@@ -3,6 +3,7 @@ Resource         resource.robot
 Suite Setup      Open And Configure Browser
 Suite Teardown   Close Browser
 Test Setup       Reset Application
+Library          OperatingSystem
 
 *** Test Cases ***
 Book Reference Can Be Submitted
@@ -119,6 +120,14 @@ Cancelling Book Reference Deletion Keeps Reference
     Get Element Count  tbody tr  ==  1
     Get Text  tbody tr  *=  Martin09
     Get Text  tbody tr  *=  Clean Code
+
+BibTeX File Contains Saved References
+    Add Book Reference  Martin09  Clean Code
+
+    ${file}=  Download  ${HOME_URL}/download/references.bib
+    ${content}=  Get File  ${file}[saveAs]
+    Should Contain  ${content}  @book{Martin09,
+    Should Contain  ${content}  title = {Clean Code}
 
 *** Keywords ***
 Add Book Reference
