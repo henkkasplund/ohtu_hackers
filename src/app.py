@@ -34,12 +34,15 @@ def add_reference():
 
         return redirect("/")
 
+    tags = citation_repository.get_all_tags()
+    print(tags)
     reference_types = citation_repository.get_reference_types()
     selected_type = request.args.get("reference_type_name")
     return render_template(
         "add_reference.html",
         reference_types=reference_types,
         selected_type=selected_type,
+        tags=tags,
     )
 
 
@@ -73,12 +76,14 @@ def edit_existing_reference(citation_id):
 
         return redirect(f"/references/{citation_id}")
 
+    tags = citation_repository.get_all_tags()
     reference_types = citation_repository.get_reference_types()
     return render_template(
         "edit_reference.html",
         reference_types=reference_types,
         selected_type=reference.reference_type_name,
         reference=reference,
+        tags=tags,
     )
 
 
@@ -112,6 +117,20 @@ def download_references():
     references = citation_repository.get_all_citations()
     bibtex = [create_bibtex(ref) for ref in references]
     return render_template("download.html", bibtex=bibtex)
+
+
+@app.route("/add_tag", methods=["POST"])
+def add_tag():
+    tag_name = request.form.get("tag_name")
+    if not tag_name or not tag_name.strip():
+        return "Tagin nimi ei voi olla tyhjä.", 400
+
+    try:
+        citation_repository.add_tag(tag_name)
+    except Exception as e:
+        return f"Virhe lisättäessä tagia: {e!s}", 500
+
+    return redirect("/")
 
 
 @app.route("/new_todo")
