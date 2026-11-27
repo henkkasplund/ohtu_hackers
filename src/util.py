@@ -19,6 +19,7 @@ def validate_todo(content):
 
 def create_book_citation(form_data):
     citation_key = form_data.get("citation_key", "").strip()
+    tag = form_data.get("tag_name", "").strip()
     author = form_data.get("author", "").strip()
     title = form_data.get("title", "").strip()
     year = form_data.get("year", "").strip()
@@ -26,6 +27,7 @@ def create_book_citation(form_data):
 
     return Citation(
         citation_key=citation_key,
+        tag=tag,
         author=author,
         title=title,
         year=year,
@@ -36,6 +38,7 @@ def create_book_citation(form_data):
 
 def create_article_citation(form_data):
     citation_key = form_data.get("citation_key", "").strip()
+    tag = form_data.get("tag_name", "").strip()
     author = form_data.get("author", "").strip()
     title = form_data.get("title", "").strip()
     year = form_data.get("year", "").strip()
@@ -45,6 +48,7 @@ def create_article_citation(form_data):
 
     return Citation(
         citation_key=citation_key,
+        tag=tag,
         author=author,
         title=title,
         year=year,
@@ -76,6 +80,7 @@ def validate_reference(citation, exclude_citation_id=None):
     if citation.reference_type_name == "book":
         required_fields = [
             citation.citation_key,
+            citation.tag,
             citation.author,
             citation.title,
             citation.year,
@@ -96,6 +101,7 @@ def validate_reference(citation, exclude_citation_id=None):
     elif citation.reference_type_name == "article":
         required_fields = [
             citation.citation_key,
+            citation.tag,
             citation.author,
             citation.title,
             citation.journal,
