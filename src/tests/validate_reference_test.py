@@ -50,6 +50,27 @@ class TestReferenceValidation(unittest.TestCase):
         with self.assertRaises(UserInputError):
             validate_reference(self.valid_book)
 
+    @patch(
+        "util.citation_repository.citation_key_exists_except",
+        return_value=False,
+    )
+    def test_edit_allows_existing_key_when_no_other_reference_uses_it(
+        self, mock_exists
+    ):
+        validate_reference(self.valid_book, exclude_citation_id=42)
+
+        mock_exists.assert_called_once_with("Martin2008", 42)
+
+    @patch(
+        "util.citation_repository.citation_key_exists_except",
+        return_value=True,
+    )
+    def test_edit_rejects_key_used_by_another_reference(self, mock_exists):
+        with self.assertRaises(UserInputError):
+            validate_reference(self.valid_book, exclude_citation_id=42)
+
+        mock_exists.assert_called_once_with("Martin2008", 42)
+
     def test_missing_field_raises_error(self):
         self.valid_book.author = "   "
 
