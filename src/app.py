@@ -28,7 +28,7 @@ def index():
         "index.html",
         references=references,
         search_author=author,
-        search_year=year_str,
+        search_year=year if year is not None else "",
     )
 
 

@@ -21,6 +21,8 @@
             type="number"
             id="year"
             name="year"
+            min="0"
+            step="1"
             value="{{ search_year or '' }}"
         />
 
@@ -69,5 +71,16 @@
     {% else %}
     <p>Ei tallennettuja viitteitä.</p>
     {% endif %}
+
+    <script>
+        const yearInput = document.getElementById("year");
+        if (yearInput) {
+            yearInput.addEventListener("keydown", (event) => {
+                if (["-", "+", ".", "e", "E"].includes(event.key)) {
+                    event.preventDefault();
+                }
+            });
+        }
+    </script>
 
 {% endblock %}
