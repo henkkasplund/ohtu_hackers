@@ -1,7 +1,7 @@
-from flask import jsonify, redirect, render_template, request
+from flask import jsonify, redirect, render_template, request, Response
 
 import util
-from bibtex import create_bibtex
+from bibtex import create_bibtex, create_bibtex_file
 from config import app, test_env
 from db_helper import reset_db
 from repositories import citation_repository
@@ -9,8 +9,27 @@ from repositories import citation_repository
 
 @app.route("/")
 def index():
-    references = citation_repository.get_all_citations()
-    return render_template("index.html", references=references)
+    author = request.args.get("author", "").strip()
+    year_str = request.args.get("year", "").strip()
+
+    year = None
+    if year_str.isdigit():
+        year = int(year_str)
+
+    if author or year is not None:
+        references = citation_repository.search_citations(
+            author=author or None,
+            year=year,
+        )
+    else:
+        references = citation_repository.get_all_citations()
+
+    return render_template(
+        "index.html",
+        references=references,
+        search_author=author,
+        search_year=year_str,
+    )
 
 
 @app.route("/add_reference", methods=["GET", "POST"])
@@ -27,6 +46,10 @@ def add_reference():
                 article = util.create_article_citation(request.form)
                 util.validate_reference(article)
                 citation_repository.save_article(article)
+            elif reference_type_name == "inproceedings":
+                inproceedings = util.create_inproceedings_citation(request.form)
+                util.validate_reference(inproceedings)
+                citation_repository.save_inproceedings(inproceedings)
             else:
                 raise util.UserInputError("Tuntematon viitetyyppi!")
         except util.UserInputError as error:
@@ -69,6 +92,14 @@ def edit_existing_reference(citation_id):
                     article, exclude_citation_id=citation_id
                 )
                 citation_repository.update_article(citation_id, article)
+            elif reference_type_name == "inproceedings":
+                inproceedings = util.create_inproceedings_citation(request.form)
+                util.validate_reference(
+                    inproceedings, exclude_citation_id=citation_id
+                )
+                citation_repository.update_inproceedings(
+                    citation_id, inproceedings
+                )
             else:
                 raise util.UserInputError("Tuntematon viitetyyppi!")
         except util.UserInputError as error:
@@ -119,6 +150,7 @@ def download_references():
     return render_template("download.html", bibtex=bibtex)
 
 
+<<<<<<< HEAD
 @app.route("/add_tag", methods=["POST"])
 def add_tag():
     tag_name = request.form.get("tag_name")
@@ -132,6 +164,17 @@ def add_tag():
 
     return redirect("/")
 
+=======
+@app.route("/download/references.bib")
+def download_references_bibtex():
+    references = citation_repository.get_all_citations()
+    bibtex_file = create_bibtex_file(references)
+    return Response(
+        bibtex_file,
+        mimetype="application/x-bibtex",
+        headers={"Content-Disposition": "attachment; filename=references.bib"},
+    )
+>>>>>>> origin/main
 
 @app.route("/new_todo")
 def new():

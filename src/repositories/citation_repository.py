@@ -26,8 +26,13 @@ def get_reference_types():
 def get_all_citations():
     result = db.session.execute(
         text("""
+<<<<<<< HEAD
             SELECT c.id, c.citation_key, c.tag, c.author, c.title, c.year, c.publisher,
             c.journal, c.volume, c.pages,
+=======
+            SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+            c.booktitle, c.journal, c.volume, c.pages,
+>>>>>>> origin/main
             c.reference_type_name, rt.display_name
             FROM citations c
             JOIN reference_types rt ON c.reference_type_name = rt.name
@@ -43,6 +48,7 @@ def get_all_citations():
             title=row.title,
             year=row.year,
             publisher=row.publisher,
+            booktitle=row.booktitle,
             journal=row.journal,
             volume=row.volume,
             pages=row.pages,
@@ -105,6 +111,31 @@ def save_article(article):
     db.session.commit()
 
 
+def save_inproceedings(inproceedings):
+    sql = text("""
+        INSERT INTO citations (
+            citation_key, author, title, year,
+            booktitle, reference_type_name
+        )
+        VALUES (
+            :citation_key, :author, :title, :year,
+            :booktitle, :reference_type_name
+        )
+    """)
+    db.session.execute(
+        sql,
+        {
+            "citation_key": inproceedings.citation_key,
+            "author": inproceedings.author,
+            "title": inproceedings.title,
+            "year": int(inproceedings.year),
+            "booktitle": inproceedings.booktitle,
+            "reference_type_name": inproceedings.reference_type_name,
+        },
+    )
+    db.session.commit()
+
+
 def citation_key_exists(citation_key):
     sql = text("SELECT 1 FROM citations WHERE citation_key = :citation_key")
     result = db.session.execute(sql, {"citation_key": citation_key}).fetchone()
@@ -125,8 +156,13 @@ def citation_key_exists_except(citation_key, citation_id):
 
 def get_citation_by_id(citation_id):
     sql = text("""
+<<<<<<< HEAD
         SELECT c.id, c.citation_key, c.tag, c.author, c.title, c.year, c.publisher,
         c.journal, c.volume, c.pages,
+=======
+        SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+        c.booktitle, c.journal, c.volume, c.pages,
+>>>>>>> origin/main
         c.reference_type_name, rt.display_name
         FROM citations c
         JOIN reference_types rt ON c.reference_type_name = rt.name
@@ -145,6 +181,7 @@ def get_citation_by_id(citation_id):
         title=row.title,
         year=row.year,
         publisher=row.publisher,
+        booktitle=row.booktitle,
         journal=row.journal,
         volume=row.volume,
         pages=row.pages,
@@ -213,10 +250,37 @@ def update_article(citation_id, article):
     db.session.commit()
 
 
+def update_inproceedings(citation_id, inproceedings):
+    sql = text("""
+        UPDATE citations
+        SET citation_key = :citation_key,
+            author = :author,
+            title = :title,
+            year = :year,
+            booktitle = :booktitle,
+            reference_type_name = :reference_type_name
+        WHERE id = :citation_id
+    """)
+    db.session.execute(
+        sql,
+        {
+            "citation_id": citation_id,
+            "citation_key": inproceedings.citation_key,
+            "author": inproceedings.author,
+            "title": inproceedings.title,
+            "year": int(inproceedings.year),
+            "booktitle": inproceedings.booktitle,
+            "reference_type_name": inproceedings.reference_type_name,
+        },
+    )
+    db.session.commit()
+
+
 def delete_citation(citation_id):
     sql = text("DELETE FROM citations WHERE id = :id")
     db.session.execute(sql, {"id": citation_id})
     db.session.commit()
+<<<<<<< HEAD
 
 
 def add_tag(tag_name):
@@ -228,3 +292,49 @@ def add_tag(tag_name):
 def get_all_tags():
     sql = text("SELECT id, name FROM tags")
     return db.session.execute(sql).fetchall()
+=======
+def search_citations(author=None, year=None):
+    conditions = []
+    params = {}
+
+    if author:
+        conditions.append("LOWER(c.author) LIKE :author")
+        params["author"] = f"%{author.strip().lower()}%"
+
+    if year is not None:
+        conditions.append("c.year = :year")
+        params["year"] = year
+
+    where_clause = ""
+    if conditions:
+        where_clause = "WHERE " + " AND ".join(conditions)
+
+    sql = text(f"""
+        SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+        c.booktitle, c.journal, c.volume, c.pages,
+        c.reference_type_name, rt.display_name
+        FROM citations c
+        JOIN reference_types rt ON c.reference_type_name = rt.name
+        {where_clause}
+        ORDER BY c.id DESC
+    """)
+
+    citations = db.session.execute(sql, params).fetchall()
+    return [
+        Citation(
+            citation_id=row.id,
+            citation_key=row.citation_key,
+            author=row.author,
+            title=row.title,
+            year=row.year,
+            publisher=row.publisher,
+            booktitle=row.booktitle,
+            journal=row.journal,
+            volume=row.volume,
+            pages=row.pages,
+            reference_type_name=row.reference_type_name,
+            reference_type_display_name=row.display_name,
+        )
+        for row in citations
+    ]
+>>>>>>> origin/main

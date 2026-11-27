@@ -27,6 +27,20 @@ class TestReferenceValidation(unittest.TestCase):
             pages="38--46",
             reference_type_name="article",
         )
+        self.valid_inproceedings = Citation(
+            citation_key="VPL11",
+            author="Vihavainen, Arto and Paksula, Matti and Luukkainen, Matti",
+            title=(
+                "Extreme Apprenticeship Method in Teaching Programming "
+                "for Beginners."
+            ),
+            year="2011",
+            booktitle=(
+                "SIGCSE '11: Proceedings of the 42nd SIGCSE technical "
+                "symposium on Computer science education"
+            ),
+            reference_type_name="inproceedings",
+        )
 
     @patch("util.citation_repository.citation_key_exists", return_value=False)
     def test_valid_book_does_not_raise_error(self, mock_exists):
@@ -37,6 +51,27 @@ class TestReferenceValidation(unittest.TestCase):
     def test_duplicate_citation_key_raises_error(self, _mock_exists):
         with self.assertRaises(UserInputError):
             validate_reference(self.valid_book)
+
+    @patch(
+        "util.citation_repository.citation_key_exists_except",
+        return_value=False,
+    )
+    def test_edit_allows_existing_key_when_no_other_reference_uses_it(
+        self, mock_exists
+    ):
+        validate_reference(self.valid_book, exclude_citation_id=42)
+
+        mock_exists.assert_called_once_with("Martin2008", 42)
+
+    @patch(
+        "util.citation_repository.citation_key_exists_except",
+        return_value=True,
+    )
+    def test_edit_rejects_key_used_by_another_reference(self, mock_exists):
+        with self.assertRaises(UserInputError):
+            validate_reference(self.valid_book, exclude_citation_id=42)
+
+        mock_exists.assert_called_once_with("Martin2008", 42)
 
     def test_missing_field_raises_error(self):
         self.valid_book.author = "   "
@@ -101,3 +136,14 @@ class TestReferenceValidation(unittest.TestCase):
 
         with self.assertRaises(UserInputError):
             validate_reference(self.valid_book)
+
+    @patch("util.citation_repository.citation_key_exists", return_value=False)
+    def test_valid_inproceedings_does_not_raise_error(self, mock_exists):
+        validate_reference(self.valid_inproceedings)
+        mock_exists.assert_called_once_with("VPL11")
+
+    def test_missing_inproceedings_booktitle_raises_error(self):
+        self.valid_inproceedings.booktitle = "   "
+
+        with self.assertRaises(UserInputError):
+            validate_reference(self.valid_inproceedings)

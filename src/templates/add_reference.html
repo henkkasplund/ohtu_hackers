@@ -28,9 +28,7 @@
   </div>
     <hr>
 
-    
-
-    {% if selected_type in ("book", "article") %}
+    {% if selected_type in ("book", "article", "inproceedings") %}
       <form action="/add_reference" method="POST">
         <input type="hidden" name="reference_type_name" value="{{ selected_type }}">
 
@@ -84,13 +82,23 @@
             <label for="pages">Sivut (Pages):</label>
             <input type="text" id="pages" name="pages" pattern="[0-9]+(-{1,2}[0-9]+)?" title="Syötä sivunumero tai sivuväli (esim. 38--46)">
           </div>
+        {% elif selected_type == "inproceedings" %}
+          <div>
+            <label for="booktitle">Julkaisun nimi (Booktitle):</label>
+            <input type="text" id="booktitle" name="booktitle" required>
+          </div>
         {% endif %}
 
         <button type="submit" class="btn">
-          Tallenna {{ "artikkeli" if selected_type == "article" else "kirja" }}
+          {% if selected_type == "book" %}
+            Tallenna kirja
+          {% elif selected_type == "article" %}
+            Tallenna artikkeli
+          {% elif selected_type == "inproceedings" %}
+            Tallenna konferenssiviite
+          {% endif %}
         </button>
       </form>
     {% endif %}
 
-    <p><a href="/" class="btn btn-secondary">Takaisin viiteluetteloon</a></p>
 {% endblock %}
