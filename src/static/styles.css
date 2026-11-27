@@ -53,3 +53,14 @@ table {
   width: 100%;
   margin: 1rem 0;
 }
+
+.top-forms {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.top-forms form {
+  margin-bottom: 0;
+}
