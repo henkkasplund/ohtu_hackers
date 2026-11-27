@@ -1,13 +1,11 @@
 import os
 import unittest
 from sqlalchemy import text
-
-os.environ["DATABASE_URL"] = "sqlite:///:memory:"
-
 from config import app, db
 from entities.citation import Citation
 from repositories.citation_repository import search_citations
 
+os.environ["DATABASE_URL"] = "sqlite:///:memory:"
 
 class TestSearchCitations(unittest.TestCase):
     def setUp(self):
