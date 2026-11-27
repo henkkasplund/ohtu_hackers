@@ -1,3 +1,34 @@
+### 2. Sprintin Retro ###
+**Huom:** kierrosmalli
+
+## Hyvin menneet aspektit ##
+- Saatiin täydet pisteet 2. sprintistä. HYVÄ ME!
+
+- Työjako huomattavasti parantunut. Nyt kaikille on hommia riittävästi.
+
+- Mainiin puskeminen loppui. Nyt pull request on pakko tehdä ennen mainin kanssa
+mergeamistä
+
+- Valmistettu katselmointiin hyvin. Tällä kertaa kaikki pääsi paikalle ajoissa oikeaan paikkaan.
+
+## Parantamista tarvittavat aspektit ##
+
+- Kommunikaatio edelleen lakkaa. esimerkiksi olisi hyvä saada tietoa etukäteen ryhmätyötilan varauksesta dailya varten.
+
+- Testit kuntoon suoraan ennen pull requestiin. Aikasemmin jaettiin testit ja koodi eri tehtäviksi. Nyt kokeilaan yhdistää nämä ja kattoo miten käy (TDD-mallin kokeilu?)
+
+- Mergin jälkeen hyvä tapa olisi poistaa turhat branchit, joita ei enää tarvita pois. 
+
+- Tarkastaa vanhat pull requestit ongelmien sattuessa. Sieltä todennäköisesti löytyy syy siihen, miksi uusin versio ei toimi
+
+- Uusiin User Storyihin merkataan suoraan hyväksymyskriteerit, eikä vasta myöhemmin
+
+
+## Lopettamista tarvittavat aspektit ##
+
+- mieletön AI:n käyttö. Käyttää harkitusti, ja tarkistaa sen luomaa koodia 100 kertaa ennen pull requestin luomista.
+
+
 ### 1. Sprintin Retro ###
 **Huom:** Sprintissä käytetty kierrosmallia
 
