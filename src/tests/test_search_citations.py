@@ -1,11 +1,14 @@
 import os
 import unittest
+
 from sqlalchemy import text
+
 from config import app, db
 from entities.citation import Citation
 from repositories.citation_repository import search_citations
 
 os.environ["DATABASE_URL"] = "sqlite:///:memory:"
+
 
 class TestSearchCitations(unittest.TestCase):
     def setUp(self):
@@ -26,6 +29,7 @@ class TestSearchCitations(unittest.TestCase):
                 CREATE TABLE IF NOT EXISTS citations (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     citation_key TEXT UNIQUE NOT NULL,
+                    tag TEXT NOT NULL,
                     author TEXT NOT NULL,
                     title TEXT NOT NULL,
                     year INTEGER NOT NULL,
@@ -52,12 +56,12 @@ class TestSearchCitations(unittest.TestCase):
         db.session.execute(
             text("""
                 INSERT INTO citations (
-                    citation_key, author, title, year, publisher, reference_type_name
+                    citation_key, tag, author, title, year, publisher, reference_type_name
                 )
                 VALUES
-                    ('Jesse08', 'Roope Ojala', 'PuuSaunat', 2008, 'Otava', 'book'),
-                    ('Kalle18', 'Hessu Tassu', 'Reissumies', 2018, 'Ressu', 'book'),
-                    ('Markku97', 'Väinö Kontti', 'Juusto ja Viini', 1997, 'FineDining', 'book')
+                    ('Jesse08', 'Gradu', 'Roope Ojala', 'PuuSaunat', 2008, 'Otava', 'book'),
+                    ('Kalle18', 'Gradu', 'Hessu Tassu', 'Reissumies', 2018, 'Ressu', 'book'),
+                    ('Markku97', 'Gradu', 'Väinö Kontti', 'Juusto ja Viini', 1997, 'FineDining', 'book')
             """)
         )
         db.session.commit()
@@ -80,12 +84,15 @@ class TestSearchCitations(unittest.TestCase):
         results = search_citations(year=2008)
         self.assertEqual(len(results), 1)
         self.assertEqual(results[0].citation_key, "Jesse08")
+        self.assertEqual(results[0].tag, "Gradu")
         self.assertEqual(results[0].author, "Roope Ojala")
         self.assertEqual(results[0].reference_type_display_name, "Kirja")
 
     def test_search_by_author_and_year(self):
         results = search_citations(author="Hessu", year=2018)
         self.assertEqual(len(results), 1)
+        self.assertEqual(results[0].tag, "Gradu")
+        self.assertEqual(results[0].author, "Hessu Tassu")
         self.assertEqual(results[0].citation_key, "Kalle18")
 
         no_match = search_citations(author="Hessu", year=2008)

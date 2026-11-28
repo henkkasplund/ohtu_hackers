@@ -14,6 +14,18 @@
     </div>
 
     <div>
+      <label for="tag_name">Tagi:</label>
+      <select id="tag_name" name="tag_name" required>
+        <option value="" disabled {% if not reference.tag %}selected{% endif %}>Valitse tagi</option>
+        {% for tag in tags %}
+          <option value="{{ tag.name }}" {% if reference.tag == tag.name %}selected{% endif %}>
+            {{ tag.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
       <label for="author">Tekijä (Author):</label>
       <input type="text" id="author" name="author" value="{{ reference.author }}" required>
     </div>

@@ -49,13 +49,15 @@ class TestReferenceEditing(unittest.TestCase):
                 "app.citation_repository.get_reference_types",
                 return_value=reference_types,
             ),
+            patch("app.citation_repository.get_all_tags", return_value=[]),
         ):
             response = self.client.get(self.path)
 
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"Viitetyyppi: Kirja", response.data)
         self.assertIn(b'value="Martin09"', response.data)
-        self.assertNotIn(b"<select", response.data)
+        self.assertNotIn(b'id="reference_type_name"', response.data)
+        self.assertIn(b'id="tag_name"', response.data)
         get_citation.assert_called_once_with(self.citation_id)
 
     def test_get_edit_form_returns_404_for_missing_reference(self):
@@ -86,7 +88,9 @@ class TestReferenceEditing(unittest.TestCase):
             response = self.client.post(self.path, data=form_data)
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.headers["Location"], f"/references/{self.citation_id}")
+        self.assertEqual(
+            response.headers["Location"], f"/references/{self.citation_id}"
+        )
         updated_book = update_book.call_args.args[1]
         update_book.assert_called_once_with(self.citation_id, updated_book)
         validate_reference.assert_called_once_with(
@@ -121,7 +125,9 @@ class TestReferenceEditing(unittest.TestCase):
             response.headers["Location"], f"/references/{self.citation_id}"
         )
         updated_article = update_article.call_args.args[1]
-        update_article.assert_called_once_with(self.citation_id, updated_article)
+        update_article.assert_called_once_with(
+            self.citation_id, updated_article
+        )
         validate_reference.assert_called_once_with(
             updated_article, exclude_citation_id=self.citation_id
         )

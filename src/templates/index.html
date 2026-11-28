@@ -36,6 +36,7 @@
         <thead>
         <tr>
             <th>Avain</th>
+            <th>Tagi</th>
             <th>Kirjoittaja</th>
             <th>Otsikko</th>
             <th>Vuosi</th>
@@ -51,6 +52,7 @@
         {% for ref in references %}
         <tr>
             <td><a href="/references/{{ ref.citation_id }}">{{ ref.citation_key }}</a></td>
+            <td>{{ ref.tag }}</td>
             <td>{{ ref.author }}</td>
             <td>{{ ref.title }}</td>
             <td>{{ ref.year }}</td>

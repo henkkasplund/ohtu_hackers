@@ -6,7 +6,7 @@
 
 {% block body %}
     <h1>Lisää viite</h1>
-
+    <div class="top-forms">
     <form action="/add_reference" method="GET">
       <label for="reference_type_name">Viitetyyppi:</label>
       <select id="reference_type_name" name="reference_type_name" required>
@@ -20,6 +20,12 @@
       <button type="submit" class="btn">Valitse</button>
     </form>
 
+    <form action="/add_tag" method="POST">
+      <label for="new_tag_name">Lisää tagi:</label>
+      <input type="text" id="new_tag_name" name="tag_name" required>
+      <button type="submit" class="btn">Lisää tagi</button>
+    </form>
+  </div>
     <hr>
 
     {% if selected_type in ("book", "article", "inproceedings") %}
@@ -30,6 +36,16 @@
           <label for="citation_key">Viiteavain (esim. Martin09):</label>
           <input type="text" id="citation_key" name="citation_key" required>
         </div>
+
+        <label for="tag_name">Tagi:</label>
+        <select id="tag_name" name="tag_name" required>
+          <option value="" disabled selected>Valitse tagi</option>
+          {% for tag in tags %}
+            <option value="{{ tag.name }}">
+              {{ tag.name }}
+            </option>
+          {% endfor %}
+        </select>
 
         <div>
           <label for="author">Tekijä (Author):</label>

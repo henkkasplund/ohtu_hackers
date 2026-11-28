@@ -12,6 +12,7 @@ Book Reference Can Be Submitted
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  Martin09
+    Select Options By  id=tag_name  label  Gradu
     Fill Text  id=author  Robert Martin
     Fill Text  id=title  Clean Code
     Fill Text  id=year  2008
@@ -35,6 +36,7 @@ Book Reference With Blank Title Is Rejected
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  Martin09
+    Select Options By  id=tag_name  label  Gradu
     Fill Text  id=author  Robert Martin
     Fill Text  id=title  ${SPACE}
     Fill Text  id=year  2008
@@ -49,6 +51,7 @@ Book Reference With Zero Year Is Rejected
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  Martin09
+    Select Options By  id=tag_name  label  Gradu
     Fill Text  id=author  Robert Martin
     Fill Text  id=title  Clean Code
     Fill Text  id=year  0000
@@ -136,9 +139,9 @@ Add Book Reference
     Select Options By  id=reference_type_name  label  Kirja
     Click  button >> text=Valitse
     Fill Text  id=citation_key  ${key}
+    Select Options By  id=tag_name  label  Gradu
     Fill Text  id=author  Robert Martin
     Fill Text  id=title  ${title}
     Fill Text  id=year  2008
     Fill Text  id=publisher  Prentice Hall
     Click  button >> text=Tallenna kirja
-

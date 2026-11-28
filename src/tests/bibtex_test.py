@@ -80,11 +80,15 @@ class TestBibtexFileCreation(unittest.TestCase):
         self.assertEqual(create_bibtex_file([]), "")
 
     def test_single_reference_matches_create_bibtex(self):
-        self.assertEqual(create_bibtex_file([self.book]), create_bibtex(self.book))
+        self.assertEqual(
+            create_bibtex_file([self.book]), create_bibtex(self.book)
+        )
 
     def test_references_are_separated_by_blank_line(self):
         result = create_bibtex_file([self.book, self.article])
-        expected = create_bibtex(self.book) + "\n\n" + create_bibtex(self.article)
+        expected = (
+            create_bibtex(self.book) + "\n\n" + create_bibtex(self.article)
+        )
         self.assertEqual(result, expected)
 
     def test_all_reference_types_are_included(self):

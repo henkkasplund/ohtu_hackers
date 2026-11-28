@@ -9,6 +9,7 @@ class TestReferenceValidation(unittest.TestCase):
     def setUp(self):
         self.valid_book = Citation(
             citation_key="Martin2008",
+            tag="Gradu",
             author="Robert C. Martin",
             title="Clean Code",
             year="2008",
@@ -17,6 +18,7 @@ class TestReferenceValidation(unittest.TestCase):
         )
         self.valid_article = Citation(
             citation_key="CBH91",
+            tag="Gradu",
             author="Allan Collins and John Seely Brown and Ann Holum",
             title="Cognitive apprenticeship: making thinking visible",
             journal="American Educator",
@@ -27,6 +29,7 @@ class TestReferenceValidation(unittest.TestCase):
         )
         self.valid_inproceedings = Citation(
             citation_key="VPL11",
+            tag="Gradu",
             author="Vihavainen, Arto and Paksula, Matti and Luukkainen, Matti",
             title=(
                 "Extreme Apprenticeship Method in Teaching Programming "
@@ -107,7 +110,14 @@ class TestReferenceValidation(unittest.TestCase):
             validate_reference(self.valid_article)
 
     def test_missing_required_article_field_raises_error(self):
-        for field in ("citation_key", "author", "title", "journal", "year"):
+        for field in (
+            "citation_key",
+            "tag",
+            "author",
+            "title",
+            "journal",
+            "year",
+        ):
             original_value = getattr(self.valid_article, field)
             setattr(self.valid_article, field, "   ")
 
@@ -121,6 +131,12 @@ class TestReferenceValidation(unittest.TestCase):
             with self.subTest(year=year), self.assertRaises(UserInputError):
                 self.valid_article.year = year
                 validate_reference(self.valid_article)
+
+    def test_missing_book_tag_raises_error(self):
+        self.valid_book.tag = "   "
+
+        with self.assertRaises(UserInputError):
+            validate_reference(self.valid_book)
 
     @patch("util.citation_repository.citation_key_exists", return_value=False)
     def test_valid_inproceedings_does_not_raise_error(self, mock_exists):

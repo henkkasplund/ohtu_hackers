@@ -6,7 +6,7 @@ FIELDS = [
     "volume",
     "pages",
     "year",
-    "publisher"
+    "publisher",
 ]
 
 

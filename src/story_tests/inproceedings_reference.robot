@@ -20,16 +20,20 @@ Inproceedings Reference Can Be Submitted
     Get Text  pre  *=  booktitle = {SIGCSE '11: Proceedings of the 42nd SIGCSE technical symposium on Computer science education}
 
 Inproceedings Reference Can Be Edited
+    Add Tag    Other
     Add Inproceedings Reference
     Click  text=VPL11
     Click  button >> text=Muokkaa
 
+    Select Options By  id=tag_name  label  Other
     Fill Text  id=booktitle  SIGCSE '11
     Click  button >> text=Muokkaa konferenssiviite
 
     Get Title  ==  Viitteen tiedot
     Get Text  pre  *=  @inproceedings{VPL11,
     Get Text  pre  *=  booktitle = {SIGCSE '11}
+    Go To  ${HOME_URL}
+    Get Text  tbody tr  *=  Other
 
 *** Keywords ***
 Add Inproceedings Reference
@@ -38,6 +42,7 @@ Add Inproceedings Reference
     Click  button >> text=Valitse
 
     Fill Text  id=citation_key  VPL11
+    Select Options By  id=tag_name  label  Gradu
     Fill Text  id=author  Vihavainen, Arto and Paksula, Matti and Luukkainen, Matti
     Fill Text  id=title  Extreme Apprenticeship Method in Teaching Programming for Beginners.
     Fill Text  id=year  2011

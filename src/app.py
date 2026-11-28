@@ -1,4 +1,5 @@
-from flask import jsonify, redirect, render_template, request, Response
+from flask import Response, jsonify, redirect, render_template, request
+from sqlalchemy.exc import IntegrityError
 
 import util
 from bibtex import create_bibtex, create_bibtex_file
@@ -57,12 +58,14 @@ def add_reference():
 
         return redirect("/")
 
+    tags = citation_repository.get_all_tags()
     reference_types = citation_repository.get_reference_types()
     selected_type = request.args.get("reference_type_name")
     return render_template(
         "add_reference.html",
         reference_types=reference_types,
         selected_type=selected_type,
+        tags=tags,
     )
 
 
@@ -104,12 +107,14 @@ def edit_existing_reference(citation_id):
 
         return redirect(f"/references/{citation_id}")
 
+    tags = citation_repository.get_all_tags()
     reference_types = citation_repository.get_reference_types()
     return render_template(
         "edit_reference.html",
         reference_types=reference_types,
         selected_type=reference.reference_type_name,
         reference=reference,
+        tags=tags,
     )
 
 
@@ -145,6 +150,20 @@ def download_references():
     return render_template("download.html", bibtex=bibtex)
 
 
+@app.route("/add_tag", methods=["POST"])
+def add_tag():
+    tag_name = request.form.get("tag_name")
+    if not tag_name or not tag_name.strip():
+        return "Tagin nimi ei voi olla tyhjä.", 400
+
+    try:
+        citation_repository.add_tag(tag_name)
+    except IntegrityError:
+        return "Tagi on jo olemassa.", 400
+
+    return redirect("/add_reference")
+
+
 @app.route("/download/references.bib")
 def download_references_bibtex():
     references = citation_repository.get_all_citations()
@@ -154,6 +173,7 @@ def download_references_bibtex():
         mimetype="application/x-bibtex",
         headers={"Content-Disposition": "attachment; filename=references.bib"},
     )
+
 
 @app.route("/new_todo")
 def new():

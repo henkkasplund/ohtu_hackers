@@ -26,7 +26,7 @@ def get_reference_types():
 def get_all_citations():
     result = db.session.execute(
         text("""
-            SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+            SELECT c.id, c.citation_key, c.tag, c.author, c.title, c.year, c.publisher,
             c.booktitle, c.journal, c.volume, c.pages,
             c.reference_type_name, rt.display_name
             FROM citations c
@@ -38,6 +38,7 @@ def get_all_citations():
         Citation(
             citation_id=row.id,
             citation_key=row.citation_key,
+            tag=row.tag,
             author=row.author,
             title=row.title,
             year=row.year,
@@ -56,16 +57,17 @@ def get_all_citations():
 def save_book(book):
     sql = text("""
         INSERT INTO citations (
-            citation_key, author, title, year, publisher, reference_type_name
+            citation_key, tag, author, title, year, publisher, reference_type_name
         )
         VALUES (
-            :citation_key, :author, :title, :year, :publisher, :reference_type_name
+            :citation_key, :tag, :author, :title, :year, :publisher, :reference_type_name
         )
     """)
     db.session.execute(
         sql,
         {
             "citation_key": book.citation_key,
+            "tag": book.tag,
             "author": book.author,
             "title": book.title,
             "year": int(book.year),
@@ -79,11 +81,11 @@ def save_book(book):
 def save_article(article):
     sql = text("""
         INSERT INTO citations (
-            citation_key, author, title, year,
+            citation_key, tag, author, title, year,
             journal, volume, pages, reference_type_name
         )
         VALUES (
-            :citation_key, :author, :title, :year,
+            :citation_key, :tag, :author, :title, :year,
             :journal, :volume, :pages, :reference_type_name
         )
     """)
@@ -91,6 +93,7 @@ def save_article(article):
         sql,
         {
             "citation_key": article.citation_key,
+            "tag": article.tag,
             "author": article.author,
             "title": article.title,
             "year": int(article.year),
@@ -106,11 +109,11 @@ def save_article(article):
 def save_inproceedings(inproceedings):
     sql = text("""
         INSERT INTO citations (
-            citation_key, author, title, year,
+            citation_key, tag, author, title, year,
             booktitle, reference_type_name
         )
         VALUES (
-            :citation_key, :author, :title, :year,
+            :citation_key, :tag, :author, :title, :year,
             :booktitle, :reference_type_name
         )
     """)
@@ -118,6 +121,7 @@ def save_inproceedings(inproceedings):
         sql,
         {
             "citation_key": inproceedings.citation_key,
+            "tag": inproceedings.tag,
             "author": inproceedings.author,
             "title": inproceedings.title,
             "year": int(inproceedings.year),
@@ -148,9 +152,9 @@ def citation_key_exists_except(citation_key, citation_id):
 
 def get_citation_by_id(citation_id):
     sql = text("""
-        SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
-        c.booktitle, c.journal, c.volume, c.pages,
-        c.reference_type_name, rt.display_name
+        SELECT c.id, c.citation_key, c.tag, c.author, c.title, c.year, c.publisher,
+               c.booktitle, c.journal, c.volume, c.pages,
+               c.reference_type_name, rt.display_name
         FROM citations c
         JOIN reference_types rt ON c.reference_type_name = rt.name
         WHERE c.id = :id
@@ -163,6 +167,7 @@ def get_citation_by_id(citation_id):
     return Citation(
         citation_id=row.id,
         citation_key=row.citation_key,
+        tag=row.tag,
         author=row.author,
         title=row.title,
         year=row.year,
@@ -180,6 +185,7 @@ def update_book(citation_id, book):
     sql = text("""
         UPDATE citations
         SET citation_key = :citation_key,
+            tag = :tag,
             author = :author,
             title = :title,
             year = :year,
@@ -192,6 +198,7 @@ def update_book(citation_id, book):
         {
             "citation_id": citation_id,
             "citation_key": book.citation_key,
+            "tag": book.tag,
             "author": book.author,
             "title": book.title,
             "year": int(book.year),
@@ -206,6 +213,7 @@ def update_article(citation_id, article):
     sql = text("""
         UPDATE citations
         SET citation_key = :citation_key,
+            tag = :tag,
             author = :author,
             title = :title,
             year = :year,
@@ -220,6 +228,7 @@ def update_article(citation_id, article):
         {
             "citation_id": citation_id,
             "citation_key": article.citation_key,
+            "tag": article.tag,
             "author": article.author,
             "title": article.title,
             "year": int(article.year),
@@ -236,6 +245,7 @@ def update_inproceedings(citation_id, inproceedings):
     sql = text("""
         UPDATE citations
         SET citation_key = :citation_key,
+            tag = :tag,
             author = :author,
             title = :title,
             year = :year,
@@ -248,6 +258,7 @@ def update_inproceedings(citation_id, inproceedings):
         {
             "citation_id": citation_id,
             "citation_key": inproceedings.citation_key,
+            "tag": inproceedings.tag,
             "author": inproceedings.author,
             "title": inproceedings.title,
             "year": int(inproceedings.year),
@@ -262,6 +273,19 @@ def delete_citation(citation_id):
     sql = text("DELETE FROM citations WHERE id = :id")
     db.session.execute(sql, {"id": citation_id})
     db.session.commit()
+
+
+def add_tag(tag_name):
+    sql = text("INSERT INTO tags (name) VALUES (:name)")
+    db.session.execute(sql, {"name": tag_name})
+    db.session.commit()
+
+
+def get_all_tags():
+    sql = text("SELECT id, name FROM tags")
+    return db.session.execute(sql).fetchall()
+
+
 def search_citations(author=None, year=None):
     conditions = []
     params = {}
@@ -279,7 +303,7 @@ def search_citations(author=None, year=None):
         where_clause = "WHERE " + " AND ".join(conditions)
 
     sql = text(f"""
-        SELECT c.id, c.citation_key, c.author, c.title, c.year, c.publisher,
+        SELECT c.id, c.citation_key, c.tag, c.author, c.title, c.year, c.publisher,
         c.booktitle, c.journal, c.volume, c.pages,
         c.reference_type_name, rt.display_name
         FROM citations c
@@ -293,6 +317,7 @@ def search_citations(author=None, year=None):
         Citation(
             citation_id=row.id,
             citation_key=row.citation_key,
+            tag=row.tag,
             author=row.author,
             title=row.title,
             year=row.year,

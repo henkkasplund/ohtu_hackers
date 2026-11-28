@@ -22,4 +22,10 @@ Open And Configure Browser
 Reset Application
     Go To  ${RESET_URL}
     Get Text  body  *=  db reset
+    Add Tag    Gradu
 
+Add Tag
+    [Arguments]    ${tag_name}
+    Go To    ${HOME_URL}/add_reference
+    Fill Text    input#new_tag_name    ${tag_name}
+    Click    button >> text=Lisää tagi
