@@ -39,9 +39,9 @@
 
         <label for="tag_name">Tagi:</label>
         <select id="tag_name" name="tag_name" required>
-          <option value="" disabled {% if not selected_type %}selected{% endif %}>Valitse tagi</option>
+          <option value="" disabled selected>Valitse tagi</option>
           {% for tag in tags %}
-            <option value="{{ tag.name }}" {% if selected_type == tag.name %}selected{% endif %}>
+            <option value="{{ tag.name }}">
               {{ tag.name }}
             </option>
           {% endfor %}
