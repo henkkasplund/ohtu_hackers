@@ -59,7 +59,6 @@ def add_reference():
         return redirect("/")
 
     tags = citation_repository.get_all_tags()
-    print(tags)
     reference_types = citation_repository.get_reference_types()
     selected_type = request.args.get("reference_type_name")
     return render_template(
