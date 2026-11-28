@@ -27,7 +27,6 @@ def get_all_citations():
     result = db.session.execute(
         text("""
             SELECT c.id, c.citation_key, c.tag, c.author, c.title, c.year, c.publisher,
-            c.journal, c.volume, c.pages,
             c.booktitle, c.journal, c.volume, c.pages,
             c.reference_type_name, rt.display_name
             FROM citations c
