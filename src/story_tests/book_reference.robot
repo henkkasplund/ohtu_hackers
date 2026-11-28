@@ -129,6 +129,12 @@ BibTeX File Contains Saved References
     Should Contain  ${content}  @book{Martin09,
     Should Contain  ${content}  title = {Clean Code}
 
+Long Title Is Truncated In Reference List
+    Add Book Reference  Martin09  Clean Code: A Handbook of Agile Software Craftsmanship
+    Go To  ${HOME_URL}
+    Get Text  tbody tr  *=  ...
+    Get Attribute  td[title^="Clean Code: A Handbook"]  title  ==  Clean Code: A Handbook of Agile Software Craftsmanship
+
 *** Keywords ***
 Add Book Reference
     [Arguments]  ${key}  ${title}

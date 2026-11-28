@@ -20,16 +20,12 @@ Article Reference Can Be Submitted
 
     Click  button >> text=Tallenna artikkeli
     Get Url  ==  ${HOME_URL}/
-
-    Get Text  tbody tr  *=  American Educator
-    Get Text  tbody tr td:nth-child(7)  ==  6
-    Get Text  tbody tr  *=  38--46
     Get Text  tbody tr  *=  CBH91
-    Get Text  tbody tr  *=  Cognitive apprenticeship: making thinking visible
+    Get Text  tbody tr  *=  American Educator
     Get Text  tbody tr  *=  Artikkeli
 
     Click  text=CBH91
-    Get Text  tbody tr  *=  American Educator
+    Get Text  body  *=  Cognitive apprenticeship: making thinking visible
     Get Text  pre  *=  @article{CBH91,
     Get Text  pre  *=  volume = {6}
     Get Text  pre  *=  pages = {38--46}

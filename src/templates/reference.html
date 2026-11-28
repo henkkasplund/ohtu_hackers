@@ -24,6 +24,7 @@
                     <th>Konferenssijulkaisu</th>
                 {% endif %}
                 <th>Tyyppi</th>
+                <th>Tagi</th>
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@
                     <td>{{ reference.booktitle }}</td>
                 {% endif %}
                 <td>{{ reference.reference_type_display_name }}</td>
+                <td>{{ reference.tag or "" }}</td>
             </tr>
         </tbody>
     </table>
