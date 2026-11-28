@@ -161,7 +161,7 @@ def add_tag():
     except IntegrityError:
         return "Tagi on jo olemassa.", 400
 
-    return redirect("/")
+    return redirect("/add_reference")
 
 
 @app.route("/download/references.bib")
