@@ -32,38 +32,36 @@
     </form>
 
     {% if references %}
-    <table border="1" cellpadding="8" style="border-collapse: collapse;">
-        <thead>
-        <tr>
-            <th>Avain</th>
-            <th>Kirjoittaja</th>
-            <th>Otsikko</th>
-            <th>Vuosi</th>
-            <th>Kustantaja</th>
-            <th>Lehti</th>
-            <th>Vuosikerta</th>
-            <th>Sivut</th>
-            <th>Konferenssijulkaisu</th>
-            <th>Tyyppi</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for ref in references %}
-        <tr>
-            <td><a href="/references/{{ ref.citation_id }}">{{ ref.citation_key }}</a></td>
-            <td>{{ ref.author }}</td>
-            <td>{{ ref.title }}</td>
-            <td>{{ ref.year }}</td>
-            <td>{{ ref.publisher or "" }}</td>
-            <td>{{ ref.journal or "" }}</td>
-            <td>{{ ref.volume or "" }}</td>
-            <td>{{ ref.pages or "" }}</td>
-            <td>{{ ref.booktitle or "" }}</td>
-            <td>{{ ref.reference_type_display_name }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    <div class="table-wrapper">
+        <table border="1" cellpadding="8" style="border-collapse: collapse;">
+            <thead>
+            <tr>
+                <th>Avain</th>
+                <th>Kirjoittaja</th>
+                <th>Otsikko</th>
+                <th>Vuosi</th>
+                <th>Julkaisu</th>
+                <th>Tyyppi</th>
+                <th>Tagi</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for ref in references %}
+            {% set publication = ref.publisher or ref.journal or ref.booktitle or "" %}
+            <tr>
+                <td><a href="/references/{{ ref.citation_id }}">{{ ref.citation_key }}</a></td>
+                <td title="{{ ref.author }}">{{ ref.author|truncate(20) }}</td>
+                <td title="{{ ref.title }}">{{ ref.title|truncate(20) }}</td>
+                <td>{{ ref.year }}</td>
+                <td title="{{ publication }}">{{ publication|truncate(20) }}</td>
+                <td>{{ ref.reference_type_display_name }}</td>
+                <td>{{ ref.tag or "" }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
     {% elif search_author or search_year %}
     <p>Hakuehdoilla ei löytynyt viitteitä.</p>
     {% else %}

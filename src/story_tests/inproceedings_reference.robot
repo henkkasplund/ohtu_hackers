@@ -11,7 +11,6 @@ Inproceedings Reference Can Be Submitted
 
     Get Text  tbody tr  *=  VPL11
     Get Text  tbody tr  *=  Konferenssiviite
-    Get Text  tbody tr  *=  SIGCSE '11: Proceedings of the 42nd SIGCSE technical symposium on Computer science education
 
     Click  text=VPL11
     Get Title  ==  Viitteen tiedot

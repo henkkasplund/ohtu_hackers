@@ -40,7 +40,7 @@ body {
 }
 
 .container {
-  max-width: 720px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 1.75rem 2rem;
   background-color: #ffffff;
@@ -58,7 +58,7 @@ table {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  max-width: 720px;
+  max-width: 1000px;
   padding: 6px 2rem;
   border: 1px solid #e2e8f0;
   margin: 0 auto 1rem;
@@ -84,4 +84,8 @@ table {
 .navbar a.active {
   color: #ffffff;
   background-color: #2563eb;
+}
+
+.table-wrapper {
+  overflow-x: auto;
 }
