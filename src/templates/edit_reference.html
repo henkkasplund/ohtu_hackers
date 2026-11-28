@@ -15,7 +15,7 @@
 
     <div>
       <label for="tag_name">Tagi:</label>
-      <select id="tag_name" name="tag_name" value="{{ reference.tag }}" required>
+      <select id="tag_name" name="tag_name" required>
         <option value="" disabled {% if not reference.tag %}selected{% endif %}>Valitse tagi</option>
         {% for tag in tags %}
           <option value="{{ tag.name }}" {% if reference.tag == tag.name %}selected{% endif %}>
